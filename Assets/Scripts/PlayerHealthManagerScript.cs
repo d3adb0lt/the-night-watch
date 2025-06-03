@@ -24,7 +24,7 @@ public class PlayerHealthManagerScript : MonoBehaviour
         healCharges = maxCharges;
         healAmount = 20;
         loseTextObject.SetActive(false);
-        SetHealthText();
+        SetPlayerHealthText();
     }
 
     // Update is called once per frame
@@ -37,7 +37,7 @@ public class PlayerHealthManagerScript : MonoBehaviour
             if (playerHealth < 0) {
                 playerHealth = 0;
             }
-            SetHealthText();
+            SetPlayerHealthText();
         }
 
         //heal
@@ -63,13 +63,13 @@ public class PlayerHealthManagerScript : MonoBehaviour
                 healCharges--;
 
                 //setting new health value
-                SetHealthText();
+                SetPlayerHealthText();
             }
 
         }
     }
 
-    void SetHealthText()
+    void SetPlayerHealthText()
     {
         healthUI.text = "HP: " + playerHealth.ToString() + " Charges Left: " + healCharges.ToString();
         if (playerHealth <= 0)
