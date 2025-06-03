@@ -33,7 +33,7 @@ public class PlayerHealthManagerScript : MonoBehaviour
         //for testing purposes, subtract health
         if (Input.GetKeyDown(KeyCode.Minus))
         {
-            playerHealth -= 10;
+            PlayerChangeHealth(-10);
             if (playerHealth < 0) {
                 playerHealth = 0;
             }
@@ -51,7 +51,7 @@ public class PlayerHealthManagerScript : MonoBehaviour
             else
             {
                 //restoring health
-                playerHealth += healAmount;
+                PlayerChangeHealth(20);
 
                 //if healing over max, set to max
                 if (playerHealth > maxHealth) 
@@ -77,6 +77,10 @@ public class PlayerHealthManagerScript : MonoBehaviour
             //for game loss
             EndGame();
         }
+    }
+
+    public void PlayerChangeHealth(float healNum) {
+        playerHealth += healNum;
     }
 
     //temporary end-game function. Can be moved to another file if it fits better
