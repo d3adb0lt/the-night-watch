@@ -31,7 +31,7 @@ public class PlayerHealthManagerScript : MonoBehaviour
     void Update()
     {
         //for testing purposes, subtract health
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Minus))
         {
             playerHealth -= 10;
             if (playerHealth < 0) {
@@ -41,12 +41,12 @@ public class PlayerHealthManagerScript : MonoBehaviour
         }
 
         //heal
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             //check if healcharges are left
             if (healCharges <= 0 || playerHealth == maxHealth) 
             {
-                
+                //do nothing
             } 
             else
             {
