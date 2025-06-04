@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+enemy-spawner
+guid: 93964e6b29a10cb44bd7a8c611504b69
+
 guid: 27a2c7987e0de44bfac6165b8632e4ef
+dev-integration
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
