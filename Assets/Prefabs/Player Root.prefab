@@ -700,10 +700,12 @@ GameObject:
   m_Component:
   - component: {fileID: 7681759490105508725}
   - component: {fileID: 3115806212065682029}
+  - component: {fileID: 6529516721491166131}
   - component: {fileID: 7580747708552687000}
   - component: {fileID: 2004219863290236997}
   - component: {fileID: 252636963231742335}
-  - component: {fileID: 6529516721491166131}
+  - component: {fileID: 3385958113382084600}
+  - component: {fileID: 4123598303145232290}
   m_Layer: 0
   m_Name: Player Root
   m_TagString: Untagged
@@ -754,8 +756,29 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!65 &6529516721491166131
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3247072468073538237}
+  m_Material: {fileID: 13400000, guid: 8701262cd0d494cc7969357ef14d77e4, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 6, z: 1}
+  m_Center: {x: 0, y: 1.79, z: 0}
 --- !u!95 &7580747708552687000
 Animator:
   serializedVersion: 7
@@ -830,27 +853,41 @@ MonoBehaviour:
   sidestepForce: 30
   sidestepDuration: 0.5
   sidestepCooldown: 0.5
---- !u!65 &6529516721491166131
-BoxCollider:
+--- !u!114 &3385958113382084600
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3247072468073538237}
-  m_Material: {fileID: 13400000, guid: 8701262cd0d494cc7969357ef14d77e4, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 6, z: 1}
-  m_Center: {x: 0, y: 1.79, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e7955b3b07aff4dbf92aa6c59da96b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHealth: 0
+  maxHealth: 0
+  healCharges: 0
+  maxCharges: 0
+  generalUIParent: {fileID: 0}
+  playerRoot: {fileID: 0}
+  healthUI: {fileID: 0}
+  healAmount: 0
+  loseTextObject: {fileID: 0}
+--- !u!114 &4123598303145232290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3247072468073538237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1385d5bf43c04dffb11e1a628509df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
 --- !u!1 &3424914069123669369
 GameObject:
   m_ObjectHideFlags: 0

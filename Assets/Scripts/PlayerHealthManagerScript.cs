@@ -9,6 +9,7 @@ public class PlayerHealthManagerScript : MonoBehaviour
     public float healCharges;
     public float maxCharges;
     public GameObject generalUIParent;
+    public GameObject playerRoot;
     public TextMeshProUGUI healthUI;
     public float healAmount;
     public GameObject loseTextObject;
@@ -79,14 +80,20 @@ public class PlayerHealthManagerScript : MonoBehaviour
         }
     }
 
-    public void PlayerChangeHealth(float healNum) {
+    public void PlayerChangeHealth(float healNum)
+    {
         playerHealth += healNum;
+        if (playerHealth < 0)
+        {
+            playerHealth = 0;
+        }
+        SetPlayerHealthText();
     }
 
     //temporary end-game function. Can be moved to another file if it fits better
     public void EndGame()
     {
-        //line to destroy player
+        playerRoot.gameObject.SetActive(false);
         loseTextObject.gameObject.SetActive(true);
         generalUIParent.gameObject.SetActive(false);
     }
