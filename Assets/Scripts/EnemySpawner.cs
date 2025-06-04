@@ -11,6 +11,11 @@ public class EnemySpawner : MonoBehaviour
 
     private GameObject currentEnemy;
 
+    void Start()
+    {
+        SetHealthText();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.S))
