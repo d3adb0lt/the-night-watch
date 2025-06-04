@@ -422,15 +422,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4477744896431850837, guid: ad495f06ae8ca44369ab0135acf6da3b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 4477744896431850837, guid: ad495f06ae8ca44369ab0135acf6da3b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4477744896431850837, guid: ad495f06ae8ca44369ab0135acf6da3b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 4477744896431850837, guid: ad495f06ae8ca44369ab0135acf6da3b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -464,6 +464,18 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 544822599}
+    - target: {fileID: 5483880009312503586, guid: ad495f06ae8ca44369ab0135acf6da3b, type: 3}
+      propertyPath: offset.x
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5483880009312503586, guid: ad495f06ae8ca44369ab0135acf6da3b, type: 3}
+      propertyPath: offset.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5483880009312503586, guid: ad495f06ae8ca44369ab0135acf6da3b, type: 3}
+      propertyPath: offset.z
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6618530959402397351, guid: ad495f06ae8ca44369ab0135acf6da3b, type: 3}
       propertyPath: m_Name
       value: Camera Follow
