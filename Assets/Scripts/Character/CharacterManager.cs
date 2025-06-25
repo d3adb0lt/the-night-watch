@@ -7,7 +7,8 @@ namespace SG
 {
     public class CharacterManager : NetworkBehaviour
     {
-        public CharacterController characterController;
+        [HideInInspector] public CharacterController characterController;
+        [HideInInspector] public Animator animator;
 
         CharacterNetworkManager characterNetworkManager;
         protected virtual void Awake()
@@ -15,7 +16,9 @@ namespace SG
             DontDestroyOnLoad(this);
 
             characterController = GetComponent<CharacterController>();
+            animator = GetComponent<Animator>();
             characterNetworkManager = GetComponent<CharacterNetworkManager>();
+
         }
 
 
@@ -49,7 +52,7 @@ namespace SG
 
         protected virtual void LateUpdate()
         { 
-            
+
         }
     }
 }

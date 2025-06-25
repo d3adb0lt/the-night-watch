@@ -8,6 +8,7 @@ namespace SG
     public class PlayerInputManager : MonoBehaviour
     {
         public static PlayerInputManager instance;
+        public PlayerManager player;
         PlayerControls playerControls;
 
         [Header("Movement Input")]
@@ -122,6 +123,14 @@ namespace SG
             {
                 moveAmount = 1;
             }
+
+            // we pass 0 on the horiz because we are not locked on, only want non strafing
+            // we use the horiz when strafing or locked on
+
+            // if we are not locked on only use move amount
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount);
+
+            // if we are locked on pass the horizontal movement set
         }
 
         private void HandelCameraMovementInput()

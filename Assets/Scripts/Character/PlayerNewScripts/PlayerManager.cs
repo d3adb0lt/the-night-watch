@@ -6,18 +6,20 @@ namespace SG
 {
     public class PlayerManager : CharacterManager
     {
-        PlayerLocomotionManager playerLocomotionManager;
+        [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
+        [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
         protected override void Awake()
         {
             base.Awake();
 
             // do more stuff for player only
             playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
 
-            // FOR TESTING PURPOSES, COMMENT THIS OUT WHEN MENU AND NETWORK ARE SETUP, THEN UNCOMMENT THE
+            // FOR TESTING PURPOSES, COMMENT THESE TWO LINES OUT WHEN MENU AND NETWORK ARE SETUP, THEN UNCOMMENT THE
             // IF BLOCK UNDER OnNetworkSpawn() FOR CORRECT FUNCTIONALITY
             PlayerCamera.instance.player = this;
-
+            PlayerInputManager.instance.player = this;
         }
 
         protected override void Update()
@@ -45,6 +47,7 @@ namespace SG
             // if (IsOwner)
             // {
             //     PlayerCamera.instance.player = this;
+            //     PlayerInputmanager.instance.player = this;
             // }
         }
 

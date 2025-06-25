@@ -108,7 +108,7 @@ namespace SG
             direction.Normalize();
 
             // we check if there is an object in front of our desired direction 
-            if (Physics.SphereCast(cameraPivotTransform.position, cameraCollisionRadius, direction, out hit, Mathf.Abs(targetCameraZPosition), collideWithLayers)) ;
+            if (Physics.SphereCast(cameraPivotTransform.position, cameraCollisionRadius, direction, out hit, Mathf.Abs(targetCameraZPosition), collideWithLayers))
             {
                 // see how far or how close it is
                 float distanceFromHitObject = Vector3.Distance(cameraPivotTransform.position, hit.point);
