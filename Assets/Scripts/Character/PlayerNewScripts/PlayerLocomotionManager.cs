@@ -47,8 +47,9 @@ namespace SG
             //our move direction is based on our cameras facing persepctive and movement inputs
             moveDirection = PlayerCamera.instance.transform.forward * verticalMovement;
             moveDirection = moveDirection + PlayerCamera.instance.transform.right * horizontalMovement;
-            moveDirection.Normalize();
             moveDirection.y = 0;
+            moveDirection.Normalize();
+
 
             if (PlayerInputManager.instance.moveAmount > 0.5f)
             {
@@ -61,24 +62,31 @@ namespace SG
                 // move at a walking speed
                 player.characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
             }
+
+            //Debug.Log("In HandleGroundedMovement(), transform.rotation is " + transform.rotation);
         }
 
         private void HandleRotation()
         {
-            Vector3 targetRotationDirection = Vector3.zero;
+            //targetRotationDirection = Vector3.zero;
             targetRotationDirection = PlayerCamera.instance.cameraObject.transform.forward * verticalMovement;
             targetRotationDirection = targetRotationDirection + PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
-            targetRotationDirection.Normalize();
             targetRotationDirection.y = 0;
-
+            targetRotationDirection.Normalize();
+            Debug.Log("Active, targetRotation is " + targetRotationDirection);
+            
             if (targetRotationDirection == Vector3.zero)
             {
                 targetRotationDirection = transform.forward;
+                Debug.Log("Stopped, targetRotation is " + targetRotationDirection);
             }
 
             Quaternion newRotation = Quaternion.LookRotation(targetRotationDirection);
+            //Debug.Log("New Rotation is " + newRotation);
             Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
+            //Debug.Log("Target rotation calculated as " + targetRotation);
             transform.rotation = newRotation;
+            Debug.Log(" in HandleRotation, transform rotation set to " + transform.rotation);
         }
     }
 }
