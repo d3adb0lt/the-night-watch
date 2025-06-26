@@ -25,6 +25,30 @@ namespace SG
             player = GetComponent<PlayerManager>();
         }
 
+        protected override void Update()
+        {
+            
+            // NETCODE PORTION, UNCOMMENT LATER
+            // if (player.IsOwner)
+            // {
+            //     player.characterNetworkManager.verticalMovement.Value = verticalMovement;
+            //     player.characterNetworkManager.horizontalMovement.Value = horizontalMovement;
+            //     player.characterNetworkManager.moveAmount.Value = moveAmount;
+            // }
+            // else
+            // {
+            //     verticalMovement = player.characterNetworkManager.verticalMovement.Value;
+            //     horizontalMovement = player.characterNetworkManager.horizontalMovement.Value;
+            //     moveAmount = player.characterNetworkManager.moveAmount.Value;
+
+            //     // if not locked on, pass move amount
+            //     player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount);
+
+            //     // if locked on, pass vert and horiz
+            // }
+            
+        }
+
         public void HandleAllMovement()
         {
             //grounded movement
@@ -33,16 +57,17 @@ namespace SG
             //aerial movement
         }
 
-        private void GetVerticalAndHorizontalInputs()
+        private void GetMovementValues()
         {
             verticalMovement = PlayerInputManager.instance.verticalInput;
             horizontalMovement = PlayerInputManager.instance.horizontalInput;
+            moveAmount = PlayerInputManager.instance.moveAmount;
 
             //clamp movement for animations
         }
         private void HandleGroundedMovement()
         {
-            GetVerticalAndHorizontalInputs();
+            GetMovementValues();
 
             //our move direction is based on our cameras facing persepctive and movement inputs
             moveDirection = PlayerCamera.instance.transform.forward * verticalMovement;
@@ -73,20 +98,20 @@ namespace SG
             targetRotationDirection = targetRotationDirection + PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
             targetRotationDirection.y = 0;
             targetRotationDirection.Normalize();
-            Debug.Log("Active, targetRotation is " + targetRotationDirection);
+            //Debug.Log("Active, targetRotation is " + targetRotationDirection);
             
             if (targetRotationDirection == Vector3.zero)
             {
                 targetRotationDirection = transform.forward;
-                Debug.Log("Stopped, targetRotation is " + targetRotationDirection);
+                //Debug.Log("Stopped, targetRotation is " + targetRotationDirection);
             }
 
             Quaternion newRotation = Quaternion.LookRotation(targetRotationDirection);
             //Debug.Log("New Rotation is " + newRotation);
             Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
             //Debug.Log("Target rotation calculated as " + targetRotation);
-            transform.rotation = newRotation;
-            Debug.Log(" in HandleRotation, transform rotation set to " + transform.rotation);
+            transform.rotation = targetRotation;
+            //Debug.Log(" in HandleRotation, transform rotation set to " + transform.rotation);
         }
     }
 }
