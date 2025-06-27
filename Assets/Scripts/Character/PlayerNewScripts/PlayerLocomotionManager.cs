@@ -143,15 +143,15 @@ namespace SG
                 player.transform.rotation = playerRotation;
 
                 // change string arg to name of currently used roll animation
-                player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true, true);
-                Debug.Log("Dodged!");
+                player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true, true, true);
+                //Debug.Log("Dodged!");
                 // perform a roll anim
             }
             // if stationary, we backstep
             else
             {
                 // perform a backstep anim
-                player.playerAnimatorManager.PlayTargetActionAnimation("Backstep", true, true);
+                player.playerAnimatorManager.PlayTargetActionAnimation("Backstep", true, true, true);
             }
         }
     }

@@ -28,7 +28,8 @@ namespace SG
 
         public virtual void PlayTargetActionAnimation(
             string targetAnimation, 
-            bool isPerformingAction, 
+            bool isPerformingAction,
+            bool isInvulnerable, 
             bool applyRootMotion = true, 
             bool canRotate = false, 
             bool canMove = false)
@@ -43,9 +44,10 @@ namespace SG
             character.isPerformingAction = isPerformingAction;
             character.canRotate = canRotate;
             character.canMove = canMove;
+            character.isInvulnerable = isInvulnerable;
 
             // TELL SERVER/HOST WE PLAYED AN ANIMATION, AND TO PLAY THAT FOR EVERYONE ELSE
-            character.characterNetworkManager.NotifyTheServerOfActionAnimationServerRpc(NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
+            // character.characterNetworkManager.NotifyTheServerOfActionAnimationServerRpc(NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
         }
     }
 }

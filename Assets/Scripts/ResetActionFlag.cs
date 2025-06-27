@@ -20,6 +20,7 @@ namespace SG{
            //character.applyRootMotion = false;
            character.canRotate = true;
            character.canMove = true;
+           character.isInvulnerable = false;
            character.animator.applyRootMotion = false;
         }
 
