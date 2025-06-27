@@ -8,16 +8,21 @@ namespace SG
     {
         //taken from input manager
         PlayerManager player;
-        public float verticalMovement;
-        public float horizontalMovement;
-        public float moveAmount;
+        [HideInInspector] public float verticalMovement;
+        [HideInInspector] public float horizontalMovement;
+        [HideInInspector] public float moveAmount;
 
+        [Header("Movement Settings")]
         private Vector3 moveDirection;
         private Vector3 targetRotationDirection;
 
         [SerializeField] float walkingSpeed = 2;
         [SerializeField] float runningSpeed = 5;
         [SerializeField] float rotationSpeed = 15;
+
+        [Header("Dodge")]
+        private Vector3 rollDirection;
+
 
         protected override void Awake()
         {
@@ -51,6 +56,7 @@ namespace SG
 
         public void HandleAllMovement()
         {
+
             //grounded movement
             HandleGroundedMovement();
             HandleRotation();
@@ -69,6 +75,8 @@ namespace SG
         {
             GetMovementValues();
 
+            if (!player.canMove)
+                return;
             //our move direction is based on our cameras facing persepctive and movement inputs
             moveDirection = PlayerCamera.instance.transform.forward * verticalMovement;
             moveDirection = moveDirection + PlayerCamera.instance.transform.right * horizontalMovement;
@@ -93,7 +101,9 @@ namespace SG
 
         private void HandleRotation()
         {
-            //targetRotationDirection = Vector3.zero;
+            if (!player.canRotate)
+                return;
+            targetRotationDirection = Vector3.zero;
             targetRotationDirection = PlayerCamera.instance.cameraObject.transform.forward * verticalMovement;
             targetRotationDirection = targetRotationDirection + PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
             targetRotationDirection.y = 0;
@@ -112,6 +122,37 @@ namespace SG
             //Debug.Log("Target rotation calculated as " + targetRotation);
             transform.rotation = targetRotation;
             //Debug.Log(" in HandleRotation, transform rotation set to " + transform.rotation);
+        }
+
+        public void AttemptToPerformDodge()
+        {
+            // if (player.isPerformingAction)
+            // {
+            //     Debug.Log("Player is performing action!");
+            //     return;
+            // }
+            // if we are moving, we dodge
+            if (moveAmount > 0)
+            {
+                rollDirection = PlayerCamera.instance.cameraObject.transform.forward * verticalMovement;
+                rollDirection += PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
+                rollDirection.y = 0;
+                rollDirection.Normalize();
+
+                Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
+                player.transform.rotation = playerRotation;
+
+                // change string arg to name of currently used roll animation
+                player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true, true);
+                Debug.Log("Dodged!");
+                // perform a roll anim
+            }
+            // if stationary, we backstep
+            else
+            {
+                // perform a backstep anim
+                player.playerAnimatorManager.PlayTargetActionAnimation("Backstep", true, true);
+            }
         }
     }
 }

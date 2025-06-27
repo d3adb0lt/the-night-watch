@@ -11,16 +11,19 @@ namespace SG
         public PlayerManager player;
         PlayerControls playerControls;
 
+        [Header("Camera Movement Input")]
+        [SerializeField] Vector2 cameraInput;
+        public float cameraHorizontalInput;
+        public float cameraVerticalInput;
+
         [Header("Movement Input")]
         [SerializeField] Vector2 movementInput;
         public float horizontalInput;
         public float verticalInput;
         public float moveAmount;
 
-        [Header("Camera Movement Input")]
-        [SerializeField] Vector2 cameraInput;
-        public float cameraHorizontalInput;
-        public float cameraVerticalInput;
+        [Header("Player Action Input")]
+        [SerializeField] bool dodgeInput = false;
 
 
         private void Awake()
@@ -33,9 +36,9 @@ namespace SG
             else
             {
                 Destroy(gameObject);
-
             }
 
+            Debug.Log("Player input manager instantiated");
 
         }
 
@@ -72,6 +75,7 @@ namespace SG
 
                 playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
                 playerControls.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
+                playerControls.PlayerActions.Dodge.performed += i => dodgeInput = true;
             }
 
             playerControls.Enable();
@@ -101,10 +105,18 @@ namespace SG
 
         private void Update()
         {
-            HandlePlayerMovementInput();
-            HandelCameraMovementInput();
-
+            HandleAllInputs();
+            //Debug.Log("Dodge input is " + dodgeInput);
         }
+
+        private void HandleAllInputs()
+        {
+            HandlePlayerMovementInput();
+            HandleCameraMovementInput();
+            HandleDodgeInput();
+        }
+
+        // MOVEMENT
 
         private void HandlePlayerMovementInput()
         {
@@ -137,10 +149,25 @@ namespace SG
             // if we are locked on pass the horizontal movement set
         }
 
-        private void HandelCameraMovementInput()
+        private void HandleCameraMovementInput()
         { 
             cameraVerticalInput = cameraInput.y;
             cameraHorizontalInput = cameraInput.x;
+        }
+
+        // ACTIONS
+
+        private void HandleDodgeInput()
+        {
+            //Debug.Log("Dodge input is " + dodgeInput);
+            if (dodgeInput)
+            {
+                dodgeInput = false;
+
+                // do not dodge if menu or ui is open (implement later)
+                // perform a dodge
+                player.playerLocomotionManager.AttemptToPerformDodge();
+            }
         }
     }
 }

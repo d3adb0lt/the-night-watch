@@ -8,6 +8,7 @@ namespace SG
 {
     public class CharacterNetworkManager : NetworkBehaviour
     {
+        CharacterManager character;
         [Header("Position")]
         public NetworkVariable<Vector3> networkPosition =
             new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -27,6 +28,38 @@ namespace SG
 
         public NetworkVariable<float> moveAmount = 
             new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+        protected virtual void Awake()
+        {
+            character = GetComponent<CharacterManager>();
+        }
+
+        // A SERVER RPC IS A FUNCTION CALLED FROM A CLIENT TO THE SERVER
+        [ServerRpc]
+        public void NotifyTheServerOfActionAnimationServerRpc(ulong clientID, string animationID, bool applyRootMotion)
+        {
+            if (IsServer)
+            {
+                PlayActionAnimationForAllClientsClientRpc(clientID, animationID, applyRootMotion);
+            }
+        }
+
+        // a client rpc is sent to all clients present from the server
+        [ClientRpc]
+        public void PlayActionAnimationForAllClientsClientRpc(ulong clientID, string animationID, bool applyRootMotion)
+        {
+            // we make sure not to run the function on the character who sent it so no double plays of animation
+            if (clientID != NetworkManager.Singleton.LocalClientId)
+            {
+                PerformActionAnimationServer(animationID, applyRootMotion);
+            }
+        }
+
+        private void PerformActionAnimationServer(string animationID, bool applyRootMotion)
+        {
+            character.animator.applyRootMotion = applyRootMotion;
+            character.animator.CrossFade(animationID, 0.2f);
+        }
     }
 }
 
