@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - Spawner
   - BossIntroSpot
+  - HealthPickup
+  - Key
   layers:
   - Default
   - TransparentFX
