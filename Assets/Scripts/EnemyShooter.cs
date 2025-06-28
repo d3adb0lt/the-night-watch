@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyShooter : MonoBehaviour
 {
     public GameObject projectilePrefab;
+    public GameObject player;
     public Transform shootPoint;
     public float shootInterval = 2f;
 
@@ -25,7 +26,6 @@ public class EnemyShooter : MonoBehaviour
             Debug.LogWarning("ProjectilePrefab or ShootPoint not assigned");
             return;
         }
-
         GameObject projectile = Instantiate(projectilePrefab, shootPoint.position, Quaternion.identity);
         Vector3 direction = (FindObjectOfType<PlayerHealth>().transform.position - shootPoint.position).normalized;
         projectile.GetComponent<Projectile>().SetDirection(direction);

@@ -4,7 +4,7 @@ public class Projectile : MonoBehaviour
 {
     public int damage = 10;
     public float speed = 10f;
-    public float lifeTime = 3f;
+    public float lifeTime = 6f;
 
     private Vector3 direction;
 
@@ -27,10 +27,10 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
+            PlayerHealthManagerScript playerHealthManagerScript = other.GetComponent<PlayerHealthManagerScript>();
+            if (playerHealthManagerScript != null)
             {
-                playerHealth.TakeDamage(damage);
+                playerHealthManagerScript.PlayerChangeHealth(-damage);
             }
             Destroy(gameObject);
         }
