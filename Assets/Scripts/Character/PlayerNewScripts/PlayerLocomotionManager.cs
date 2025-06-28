@@ -18,6 +18,7 @@ namespace SG
 
         [SerializeField] float walkingSpeed = 2;
         [SerializeField] float runningSpeed = 5;
+        [SerializeField] float sprintingSpeed = 10;
         [SerializeField] float rotationSpeed = 15;
 
         [Header("Dodge")]
@@ -83,18 +84,25 @@ namespace SG
             moveDirection.y = 0;
             moveDirection.Normalize();
 
+            // if (player.playerNetworkManager.isSprinting.Value)
+            // {
+            //     player.characterController.Move(moveDirection * sprintingSpeed * Time.deltaTime);
+            // }
+            // else
+            // {
+                if (PlayerInputManager.instance.moveAmount > 0.5f)
+                {
+                    // move at a running speed
+                    player.characterController.Move(moveDirection * runningSpeed * Time.deltaTime);
 
-            if (PlayerInputManager.instance.moveAmount > 0.5f)
-            {
-                // move at a running speed
-                player.characterController.Move(moveDirection * runningSpeed * Time.deltaTime);
+                }
+                else if (PlayerInputManager.instance.moveAmount <= 0.5f)
+                {
+                    // move at a walking speed
+                    player.characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
+                }
+            //}
 
-            }
-            else if (PlayerInputManager.instance.moveAmount <= 0.5f)
-            {
-                // move at a walking speed
-                player.characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
-            }
 
             //Debug.Log("In HandleGroundedMovement(), transform.rotation is " + transform.rotation);
         }
@@ -122,6 +130,29 @@ namespace SG
             //Debug.Log("Target rotation calculated as " + targetRotation);
             transform.rotation = targetRotation;
             //Debug.Log(" in HandleRotation, transform rotation set to " + transform.rotation);
+        }
+
+        public void HandleSprinting()
+        {
+            if (player.isPerformingAction)
+            {
+                player.playerNetworkManager.isSprinting.Value = false;
+                return;
+            }
+
+            // out of stamina, set sprinting to false
+
+            // if moving, set sprinting to true
+            if (moveAmount >= 0.5)
+            {
+                player.playerNetworkManager.isSprinting.Value = true;
+            }
+            else
+            {
+                player.playerNetworkManager.isSprinting.Value = false;
+            }
+            // if stationary, set sprinting to false
+
         }
 
         public void AttemptToPerformDodge()

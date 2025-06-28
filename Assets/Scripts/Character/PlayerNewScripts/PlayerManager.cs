@@ -8,6 +8,7 @@ namespace SG
     {
         [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
         [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
+        [HideInInspector] public PlayerNetworkManager playerNetworkManager;
         
         protected override void Awake()
         {

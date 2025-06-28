@@ -24,6 +24,7 @@ namespace SG
 
         [Header("Player Action Input")]
         [SerializeField] bool dodgeInput = false;
+        [SerializeField] bool sprintInput = false;
 
 
         private void Awake()
@@ -76,6 +77,12 @@ namespace SG
                 playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
                 playerControls.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
                 playerControls.PlayerActions.Dodge.performed += i => dodgeInput = true;
+
+                // holding input sets bool to true
+                playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
+
+                // releasing input sets bool to false
+                playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
             }
 
             playerControls.Enable();
@@ -114,6 +121,7 @@ namespace SG
             HandlePlayerMovementInput();
             HandleCameraMovementInput();
             HandleDodgeInput();
+            HandleSprinting();
         }
 
         // MOVEMENT
@@ -160,13 +168,22 @@ namespace SG
         private void HandleDodgeInput()
         {
             //Debug.Log("Dodge input is " + dodgeInput);
-            if (dodgeInput)
+            if (dodgeInput && !player.isPerformingAction)
             {
                 dodgeInput = false;
 
                 // do not dodge if menu or ui is open (implement later)
                 // perform a dodge
                 player.playerLocomotionManager.AttemptToPerformDodge();
+            }
+        }
+
+        private void HandleSprinting()
+        {
+            if (sprintInput)
+            {
+                // handle sprinting
+                player.playerLocomotionManager.HandleSprinting();
             }
         }
     }
