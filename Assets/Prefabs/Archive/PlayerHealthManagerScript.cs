@@ -12,7 +12,7 @@ public class PlayerHealthManagerScript : MonoBehaviour
     public GameObject playerRoot;
     public TextMeshProUGUI healthUI;
     public float healAmount;
-    public GameObject loseTextObject;
+    public Canvas loseTextObject;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,7 +24,12 @@ public class PlayerHealthManagerScript : MonoBehaviour
         maxCharges = 3;
         healCharges = maxCharges;
         healAmount = 20;
-        loseTextObject.SetActive(false);
+
+        generalUIParent = GameObject.Find("UI").GetComponent<GameObject>();
+        healthUI = GameObject.Find("healthUI").GetComponent<TextMeshProUGUI>();
+        loseTextObject = GameObject.Find("loseText").GetComponent<Canvas>();
+
+        loseTextObject.gameObject.SetActive(false);
         SetPlayerHealthText();
     }
 

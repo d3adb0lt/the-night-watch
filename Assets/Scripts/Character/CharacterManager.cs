@@ -1,68 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Unity.Netcode;
 
-namespace SG
+public class CharacterManager : NetworkBehaviour
 {
-    public class CharacterManager : NetworkBehaviour
+    [HideInInspector] public CharacterController characterController;
+    [HideInInspector] public Animator animator;
+    [HideInInspector] public CharacterNetworkManager characterNetworkManager;
+
+    [Header("Flags")]
+    public bool isPerformingAction = false;
+    public bool applyRootMotion = false;
+    public bool canRotate = true;
+    public bool canMove = true;
+    protected virtual void Awake()
     {
-        [HideInInspector] public CharacterController characterController;
-        [HideInInspector] public Animator animator;
+        DontDestroyOnLoad(this);
 
-        [HideInInspector] public CharacterNetworkManager characterNetworkManager;
+        characterController = GetComponent<CharacterController>();
+        characterNetworkManager = GetComponent<CharacterNetworkManager>();
+        animator = GetComponent<Animator>();
+    }
 
-        [Header("flags")]
-        public bool isPerformingAction = false;
-        //public bool applyRootMotion = false;
-        public bool canRotate = true;
-        public bool canMove = true;
-        public bool isInvulnerable = false;
-        protected virtual void Awake()
+    protected virtual void Update()
+    {
+        // if your character moved in your world, send that information over to the connected player,
+        // so that your character representation can be changed accordingly on their end
+        if (IsOwner)
         {
-            DontDestroyOnLoad(this);
-
-            characterController = GetComponent<CharacterController>();
-            animator = GetComponent<Animator>();
-            characterNetworkManager = GetComponent<CharacterNetworkManager>();
-
+            characterNetworkManager.networkPosition.Value = transform.position;
+            characterNetworkManager.networkRotation.Value = transform.rotation;
         }
-
-
-        protected virtual void Update()
+        // if the person connected to your game world moves then update their character representation in your world accordingly.
+        else
         {
-
-            //UNCOMMENT WHEN IMPLEMENTING NETCODE
-
-            // // if char is being controlled from our side, assign its network pos to the pos of our transform
-            // if (IsOwner)
-            // {
-            //     characterNetworkManager.networkPosition.Value = transform.position;
-            //     characterNetworkManager.networkRotation.Value = transform.rotation;
-            // }
-            // // if this char is being controlled from elsewhere, assign its position here locally by the position of its
-            // // network transform
-            // else
-            // {
-            //     // position
-            //     transform.position = Vector3.SmoothDamp
-            //         (transform.position,
-            //         characterNetworkManager.networkPosition.Value,
-            //         ref characterNetworkManager.networkPositionVelocity,
-            //         characterNetworkManager.networkPositionSmoothTime);
-
-            //     // rotation
-            //     transform.rotation = Quaternion.Slerp
-            //         (transform.rotation,
-            //         characterNetworkManager.networkRotation.Value,
-            //         characterNetworkManager.networkRotationSmoothTime);
-            // }
-        }
-
-        protected virtual void LateUpdate()
-        { 
-
+            // update position
+            transform.position = Vector3.SmoothDamp
+                (transform.position, characterNetworkManager.networkPosition.Value,
+                ref characterNetworkManager.networkPositionVelocity, characterNetworkManager.networkPositionSmoothTime);
+            // update rotation
+            transform.rotation = Quaternion.Slerp
+                (transform.rotation, characterNetworkManager.networkRotation.Value,
+                characterNetworkManager.networkRotationSmoothTime);
         }
     }
-}
 
+    protected virtual void LateUpdate()
+    {
+        
+    }
+}

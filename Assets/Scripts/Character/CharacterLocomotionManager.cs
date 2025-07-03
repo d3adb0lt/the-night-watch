@@ -2,19 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SG
+public class CharacterLocomotionManager : MonoBehaviour
 {
-    public class CharacterLocomotionManager : MonoBehaviour
+    protected virtual void Awake()
     {
-        protected virtual void Awake()
-        {
-            
-        }
 
-        protected virtual void Update()
-        {
-            
-        }
+    }
+
+    protected virtual void Update()
+    {
+        
     }
 }
 
