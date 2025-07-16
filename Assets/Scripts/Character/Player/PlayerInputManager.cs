@@ -25,6 +25,7 @@ public class PlayerInputManager : MonoBehaviour
     [Header("Player Action Input")]
     [SerializeField] bool dodgeInput = false;
     [SerializeField] bool attackInput = false;
+    [SerializeField] int chainNum = 0;
     [SerializeField] PlayerInputType bufferedInput = PlayerInputType.None;
 
     private void Awake()
@@ -75,23 +76,67 @@ public class PlayerInputManager : MonoBehaviour
     }
 
     // called when this script is active
-    private void OnEnable()
+private void OnEnable()
+{
+    if (userControls == null)
     {
-        if (userControls == null)
+        userControls = new UserControls();
+
+        userControls.UserMovement.Movement.performed += i => 
+            movement = i.ReadValue<Vector2>();
+
+        userControls.UserCamera.Movement.performed += i => 
+            cameraInput = i.ReadValue<Vector2>();
+
+        userControls.UserActions.Dodge.performed += i =>
         {
-            userControls = new UserControls();
+            if (playerManager.isPerformingAction)
+            {
+                PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Roll);
+            }
+            else
+            {
+                dodgeInput = true;
+            }
+        };
 
-            // takes the values from the performed user control and adds them to the Vector2 var movement
-            userControls.UserMovement.Movement.performed += i => movement = i.ReadValue<Vector2>();
+        userControls.UserActions.MeleeAttack.performed += i =>
+        {
+            if (playerManager.isPerformingAction)
+            {
+                if (chainNum == 0)
+                {
+                    PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack1);
+                    Debug.Log("a1 queued");
+                } 
+                else if (chainNum == 1)
+                {
+                    PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack2);
+                    Debug.Log("a2 queued");
+                } 
+                else if (chainNum == 2)
+                {
+                    PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack3);
+                    Debug.Log("a3 queued");
+                }
+                else if (chainNum == 3)
+                {
+                    PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack1);
+                    Debug.Log("loop back, a1 queued");
+                }
 
-            userControls.UserCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
 
-            userControls.UserActions.Dodge.performed += i => dodgeInput = true;
-
-            userControls.UserActions.MeleeAttack.performed += i => attackInput = true;
-        }
-        userControls.Enable();
+            }
+            else
+            {
+                attackInput = true;
+                chainNum = 1;
+            }
+        };
     }
+
+    userControls.Enable();
+}
 
     // called whenever the game is minimized or maximized
     // game maximized controls are enabled, game minimized controls disabled
@@ -124,14 +169,11 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleAllInputs()
     {
+        ReadInputBuffer();
         HandleMoveInput();
         HandleCameraMoveInput();
         HandleDodgeInput();
         HandleMeleeAttackInput();
-        if (PlayerInputBuffer.Instance.GetBufferedInput() != PlayerInputType.None)
-        {
-            HandleInputBuffer();
-        }
     }
 
     //TO - DO make input queue
@@ -189,31 +231,64 @@ public class PlayerInputManager : MonoBehaviour
             attackInput = false;
 
             //attack
-            playerManager.playerLocoMotionManager.AttemptToPerformMeleeAttack();
+            playerManager.playerLocoMotionManager.AttemptToPerformMeleeAttack(chainNum);
         }
     }
 
-    private void HandleInputBuffer()
+    // private void HandleInputBuffer()
+    // {
+    //     bufferedInput = PlayerInputBuffer.Instance.GetBufferedInput();
+    //     switch (bufferedInput)
+    //     {
+    //         case PlayerInputType.Attack1:
+    //             playerManager.playerLocoMotionManager.AttemptToPerformMeleeAttack();
+    //             break;
+
+    //         // case PlayerInputType.Attack2:
+    //         //     playerManager.playerLocoMotionManager.AttemptToPerformMeleeAttack(2);
+    //         //     break;
+
+    //         // case PlayerInputType.Attack3:
+    //         //     Debug.Log("Third chain attack performed");
+    //         //     playerManager.playerLocoMotionManager.AttemptToPerformMeleeAttack(3);
+    //         //     break;
+
+    //         case PlayerInputType.Roll:
+    //             playerManager.playerLocoMotionManager.AttemptToPerformDodge();
+    //             break;
+
+    //         default:
+    //             break;
+    //     }
+    // }
+
+    private void ReadInputBuffer()
     {
-        bufferedInput = PlayerInputBuffer.Instance.GetBufferedInput();
-        switch (bufferedInput)
+        if (!playerManager.isPerformingAction)
         {
-            case PlayerInputType.Attack1:
-                playerManager.playerLocoMotionManager.AttemptToPerformMeleeAttack();
-                break;
-
-            case PlayerInputType.Attack2:
-                break;
-
-            case PlayerInputType.Attack3:
-                break;
-
-            case PlayerInputType.Roll:
-                playerManager.playerLocoMotionManager.AttemptToPerformDodge();
-                break;
-
-            default:
-                break;
+            bufferedInput = PlayerInputBuffer.Instance.GetBufferedInput();
+            switch (bufferedInput)
+            {
+                case PlayerInputType.Attack1:
+                    attackInput = true;
+                    chainNum = 1;
+                    break;
+                case PlayerInputType.Attack2:
+                    attackInput = true;
+                    chainNum = 2;
+                    break;
+                case PlayerInputType.Attack3:
+                    attackInput = true;
+                    chainNum = 3;
+                    break;
+                case PlayerInputType.Roll:
+                    dodgeInput = true;
+                    chainNum = 0;
+                    break;
+                default:
+                    break;
+            }
+            PlayerInputBuffer.Instance.ConsumeBufferedInput();
         }
     }
 }

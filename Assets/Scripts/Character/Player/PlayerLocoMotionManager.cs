@@ -122,10 +122,10 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
     {
         if (player.isPerformingAction && !player.actionCancelable)
         {
-            if (PlayerInputBuffer.Instance.GetBufferedInput() != PlayerInputType.Roll)
-            {
-                PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Roll);
-            }
+            // if (PlayerInputBuffer.Instance.GetBufferedInput() != PlayerInputType.Roll)
+            // {
+            //     PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Roll);
+            // }
             return;
         }
 
@@ -141,30 +141,45 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
             Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
             player.transform.rotation = playerRotation;
 
-            player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true, false);
+            player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true, false, false);
         }
         else
         {
             // back-step animation
-            player.playerAnimatorManager.PlayTargetActionAnimation("Backstep", true, false);
+            player.playerAnimatorManager.PlayTargetActionAnimation("Backstep", true, false, false);
         }
     }
 
-    public void AttemptToPerformMeleeAttack()
+    /*
+    note to self
+
+    replace buffer with buffer queue for all
+
+    priority right now is to set up a hitbox for the sword and player
+
+    then set up buffer queue
+
+    then implement taking damage and animation for that
+
+    */
+
+    public void AttemptToPerformMeleeAttack(int chainNum)
     {
         if (player.isPerformingAction)
         {
-            if (PlayerInputBuffer.Instance.GetBufferedInput() != PlayerInputType.Attack1)
-            {
-                PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack1);
-            }
-            
+            // if any other buffered input other than attack1, add attack1 to the buffer
+            // if (PlayerInputBuffer.Instance.GetBufferedInput() == PlayerInputType.None)
+            // {
+            //     PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack1);
+            // }
+
+
             //Debug.Log("character cannot perform action");
             return;
         }
-        Debug.Log("melee attack performed");
-        player.playerAnimatorManager.PlayTargetActionAnimation("MeleeAttack1", true, true);
+        //Debug.Log("melee attack performed");
+        player.playerAnimatorManager.PlayTargetActionAnimation("MeleeAttack" + chainNum, true, true, true);
+        player.previousInput = PlayerInputType.Attack1;
 
     }
-
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum PlayerInputType
@@ -11,14 +12,30 @@ public enum PlayerInputType
 
 public class PlayerInputBuffer : MonoBehaviour
 {
+    private class BufferedInput
+    {
+        public PlayerInputType input;
+        public float timeAdded;
 
-    public static PlayerInputBuffer Instance {get; private set;}
-    public float bufferDuration = 0.2f;
+        public BufferedInput(PlayerInputType input, float timeAdded)
+        {
+            this.input = input;
+            this.timeAdded = timeAdded;
+        }
 
-    public PlayerInputType bufferedInput = PlayerInputType.None;
-    private float bufferTimer = 0f;
+        public bool IsExpired(float currentTime, float duration)
+        {
+            return currentTime > timeAdded + duration;
+        }
+    }
 
-    public bool HasBufferedInput => bufferedInput != PlayerInputType.None;
+
+    public static PlayerInputBuffer Instance { get; private set; }
+
+    private Queue<BufferedInput> inputQueue = new Queue<BufferedInput>();
+
+    [Header("Buffer Settings")]
+    public float bufferDuration = 0.75f;
 
     private void Awake()
     {
@@ -31,42 +48,40 @@ public class PlayerInputBuffer : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     void Update()
     {
-        Debug.Log("This buffer is updating!");
-        if (bufferTimer > 0f)
-        {
-            Debug.Log("This buffer is subtracting time!");
-            bufferTimer -= Time.deltaTime;
+        float currentTime = Time.time;
 
-            if (bufferTimer <= 0f)
-            {
-                Debug.Log("buffer cleared!");
-                ClearBuffer();
-            }
+        // Remove expired inputs
+        while (inputQueue.Count > 0 && inputQueue.Peek().IsExpired(currentTime, bufferDuration))
+        {
+            inputQueue.Dequeue();
         }
     }
 
     public void BufferInput(PlayerInputType input)
     {
-        bufferedInput = input;
-        bufferTimer = bufferDuration;
+        inputQueue.Enqueue(new BufferedInput(input, Time.time));
     }
 
     public PlayerInputType GetBufferedInput()
     {
-        return bufferedInput;
+        return inputQueue.Count > 0 ? inputQueue.Peek().input : PlayerInputType.None;
     }
+
+    public bool HasBufferedInput => inputQueue.Count > 0;
 
     public void ConsumeBufferedInput()
     {
-        ClearBuffer();
+        if (inputQueue.Count > 0)
+        {
+            inputQueue.Dequeue();
+        }
     }
 
-    private void ClearBuffer()
+    public void ClearBuffer()
     {
-        bufferedInput = PlayerInputType.None;
-        bufferTimer = 0f;
+        inputQueue.Clear();
     }
-
 }

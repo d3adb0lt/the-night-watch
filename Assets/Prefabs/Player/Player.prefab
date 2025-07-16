@@ -894,6 +894,9 @@ MonoBehaviour:
   canRotate: 1
   canMove: 1
   actionCancelable: 0
+  isChaining: 0
+  chainNum: 0
+  previousInput: 0
   playerAnimatorManager: {fileID: 0}
   playerLocoMotionManager: {fileID: 0}
 --- !u!114 &7114750482827781011
