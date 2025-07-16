@@ -13,6 +13,7 @@ public class CharacterManager : NetworkBehaviour
     public bool applyRootMotion = false;
     public bool canRotate = true;
     public bool canMove = true;
+    public bool actionCancelable = false;
     protected virtual void Awake()
     {
         DontDestroyOnLoad(this);

@@ -17,6 +17,7 @@ public class ResetActionFlag : StateMachineBehaviour
         characterManager.applyRootMotion = false;
         characterManager.canRotate = true;
         characterManager.canMove = true;
+        characterManager.actionCancelable = false;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

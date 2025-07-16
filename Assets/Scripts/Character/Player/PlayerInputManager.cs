@@ -8,6 +8,7 @@ public class PlayerInputManager : MonoBehaviour
 {
     private static PlayerInputManager instance;
     public PlayerManager playerManager;
+    public PlayerInputBuffer playerInputBuffer;
     UserControls userControls;
 
     [Header("Player Movement Input")]
@@ -23,6 +24,8 @@ public class PlayerInputManager : MonoBehaviour
 
     [Header("Player Action Input")]
     [SerializeField] bool dodgeInput = false;
+    [SerializeField] bool attackInput = false;
+    [SerializeField] PlayerInputType bufferedInput = PlayerInputType.None;
 
     private void Awake()
     {
@@ -84,6 +87,8 @@ public class PlayerInputManager : MonoBehaviour
             userControls.UserCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
 
             userControls.UserActions.Dodge.performed += i => dodgeInput = true;
+
+            userControls.UserActions.MeleeAttack.performed += i => attackInput = true;
         }
         userControls.Enable();
     }
@@ -122,7 +127,14 @@ public class PlayerInputManager : MonoBehaviour
         HandleMoveInput();
         HandleCameraMoveInput();
         HandleDodgeInput();
+        HandleMeleeAttackInput();
+        if (PlayerInputBuffer.Instance.GetBufferedInput() != PlayerInputType.None)
+        {
+            HandleInputBuffer();
+        }
     }
+
+    //TO - DO make input queue
 
     // movement
     private void HandleMoveInput()
@@ -166,6 +178,42 @@ public class PlayerInputManager : MonoBehaviour
             // perform dodge
 
             playerManager.playerLocoMotionManager.AttemptToPerformDodge();
+        }
+    }
+
+    // attacking
+    private void HandleMeleeAttackInput()
+    {
+        if (attackInput)
+        {
+            attackInput = false;
+
+            //attack
+            playerManager.playerLocoMotionManager.AttemptToPerformMeleeAttack();
+        }
+    }
+
+    private void HandleInputBuffer()
+    {
+        bufferedInput = PlayerInputBuffer.Instance.GetBufferedInput();
+        switch (bufferedInput)
+        {
+            case PlayerInputType.Attack1:
+                playerManager.playerLocoMotionManager.AttemptToPerformMeleeAttack();
+                break;
+
+            case PlayerInputType.Attack2:
+                break;
+
+            case PlayerInputType.Attack3:
+                break;
+
+            case PlayerInputType.Roll:
+                playerManager.playerLocoMotionManager.AttemptToPerformDodge();
+                break;
+
+            default:
+                break;
         }
     }
 }

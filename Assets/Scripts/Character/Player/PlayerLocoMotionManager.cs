@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerLocoMotionManager : CharacterLocomotionManager
 {
     PlayerManager player;
+
     // taken from the player input manager
     [HideInInspector] public float verticalMovement;
     [HideInInspector] public float horizontalMovement;
@@ -53,7 +54,7 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
             return;
         }
         // ground movement
-        HanldeGroundMovement();
+        HandleGroundMovement();
         HandleRotationMovement();
         // aerial movement
     }
@@ -66,7 +67,7 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
         // clamp movements
     }
 
-    private void HanldeGroundMovement()
+    private void HandleGroundMovement()
     {
         GetMovementValues();
 
@@ -119,8 +120,12 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
 
     public void AttemptToPerformDodge()
     {
-        if (player.isPerformingAction)
+        if (player.isPerformingAction && !player.actionCancelable)
         {
+            if (PlayerInputBuffer.Instance.GetBufferedInput() != PlayerInputType.Roll)
+            {
+                PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Roll);
+            }
             return;
         }
 
@@ -136,12 +141,30 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
             Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
             player.transform.rotation = playerRotation;
 
-            player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true);
+            player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true, false);
         }
         else
         {
             // back-step animation
-            player.playerAnimatorManager.PlayTargetActionAnimation("Backstep", true);
+            player.playerAnimatorManager.PlayTargetActionAnimation("Backstep", true, false);
         }
     }
+
+    public void AttemptToPerformMeleeAttack()
+    {
+        if (player.isPerformingAction)
+        {
+            if (PlayerInputBuffer.Instance.GetBufferedInput() != PlayerInputType.Attack1)
+            {
+                PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack1);
+            }
+            
+            //Debug.Log("character cannot perform action");
+            return;
+        }
+        Debug.Log("melee attack performed");
+        player.playerAnimatorManager.PlayTargetActionAnimation("MeleeAttack1", true, true);
+
+    }
+
 }

@@ -18,7 +18,7 @@ public class CharacterAnimatorManager : MonoBehaviour
     }
 
     public virtual void PlayTargetActionAnimation(string targetAnimation,
-        bool isPerformingAction, bool applyRootMotion = true,
+        bool isPerformingAction, bool actionCancelable, bool applyRootMotion = true,
         bool canRotate = false, bool canMove = false)
     {
         characterManager.applyRootMotion = applyRootMotion;
@@ -26,6 +26,7 @@ public class CharacterAnimatorManager : MonoBehaviour
 
         // used to stop character from performing new actions in the midst of one
         characterManager.isPerformingAction = isPerformingAction;
+        characterManager.actionCancelable = actionCancelable;
         characterManager.canRotate = canRotate;
         characterManager.canMove = canMove;
 
