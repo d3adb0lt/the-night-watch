@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerLocoMotionManager : CharacterLocomotionManager
 {
     PlayerManager player;
+    PlayerWeaponManager playerWeapon;
 
     // taken from the player input manager
     [HideInInspector] public float verticalMovement;
@@ -24,6 +25,8 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
         base.Awake();
 
         player = GetComponent<PlayerManager>();
+
+        playerWeapon = GetComponentInChildren<PlayerWeaponManager>();
     }
 
     protected override void Update()
@@ -173,6 +176,22 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
             return;
         }
         //Debug.Log("melee attack performed");
+
+        playerWeapon.EnableWeaponCollider();
+        switch (chainNum)
+        {
+            case 1:
+                playerWeapon.SetWeaponDamage(10);
+                break;
+            case 2:
+                playerWeapon.SetWeaponDamage(20);
+                break;
+            case 3:
+                playerWeapon.SetWeaponDamage(30);
+                break;
+            default:
+                break;
+        }        
         player.playerAnimatorManager.PlayTargetActionAnimation("MeleeAttack" + chainNum, true, true, true);
         //player.previousInput = PlayerInputType.Attack1;
 

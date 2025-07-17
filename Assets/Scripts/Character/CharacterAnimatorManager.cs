@@ -32,6 +32,7 @@ public class CharacterAnimatorManager : MonoBehaviour
         characterManager.canMove = canMove;
 
 
+
         // tell host that an animation was played, and that every client should see that animation too
         characterManager.characterNetworkManager.NotifyServerOfActionAnimationServerRpc(NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
     }
