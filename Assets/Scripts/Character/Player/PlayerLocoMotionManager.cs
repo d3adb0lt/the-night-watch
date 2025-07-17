@@ -130,11 +130,11 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
         }
 
         // if moving when dodging perform roll else, perform a backstep
-        if (totalMovement > 0)
-        {
             // roll animation
             rollDirection = PlayerCamera.GetInstance().cameraObject.transform.forward * verticalMovement;
             rollDirection += PlayerCamera.GetInstance().cameraObject.transform.right * horizontalMovement;
+
+            //rollDirection = 
             rollDirection.y = 0;
             rollDirection.Normalize();
 
@@ -142,12 +142,7 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
             player.transform.rotation = playerRotation;
 
             player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true, false, false);
-        }
-        else
-        {
-            // back-step animation
-            player.playerAnimatorManager.PlayTargetActionAnimation("Backstep", true, false, false);
-        }
+
     }
 
     /*
@@ -179,7 +174,7 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
         }
         //Debug.Log("melee attack performed");
         player.playerAnimatorManager.PlayTargetActionAnimation("MeleeAttack" + chainNum, true, true, true);
-        player.previousInput = PlayerInputType.Attack1;
+        //player.previousInput = PlayerInputType.Attack1;
 
     }
 }

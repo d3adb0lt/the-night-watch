@@ -174,6 +174,9 @@ private void OnEnable()
         HandleCameraMoveInput();
         HandleDodgeInput();
         HandleMeleeAttackInput();
+
+        // methods for testing
+        TestDeathAndDamageAnimPlayer();
     }
 
     //TO - DO make input queue
@@ -232,6 +235,22 @@ private void OnEnable()
 
             //attack
             playerManager.playerLocoMotionManager.AttemptToPerformMeleeAttack(chainNum);
+        }
+    }
+
+    // testing purposes, handle damage animation
+    private void TestDeathAndDamageAnimPlayer()
+    {
+        // testing damage anim
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            playerManager.playerAnimatorManager.PlayTargetActionAnimation("TakeDamage", true, true, false);
+        }
+
+        // testing death anim
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            playerManager.playerAnimatorManager.PlayTargetActionAnimation("Death", true, false, false);
         }
     }
 
