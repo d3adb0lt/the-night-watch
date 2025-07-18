@@ -21,10 +21,10 @@ public class PlayerManager : CharacterManager
 
         // if gameobject is not owned by us, do not edit or control it
         // this stops players being able to move themselves and those who joined their server
-        if (!IsOwner)
-        {
-            return;
-        }
+        // if (!IsOwner)
+        // {
+        //     return;
+        // }
 
         // all characted movement handled per frame
         playerLocoMotionManager.HandleAllMovement();

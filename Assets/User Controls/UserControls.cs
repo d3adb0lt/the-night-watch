@@ -309,6 +309,15 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MeleeAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""aee8325e-de74-4a5c-b298-7a71aa0cbb07"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -333,6 +342,28 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
                     ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4492cb28-05ec-4863-88ef-9a702df492f1"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""114a19a5-c81f-4cf0-993c-bf1f1f44e6a6"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -348,6 +379,7 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
         // User Actions
         m_UserActions = asset.FindActionMap("User Actions", throwIfNotFound: true);
         m_UserActions_Dodge = m_UserActions.FindAction("Dodge", throwIfNotFound: true);
+        m_UserActions_MeleeAttack = m_UserActions.FindAction("MeleeAttack", throwIfNotFound: true);
     }
 
     ~@UserControls()
@@ -623,6 +655,7 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_UserActions;
     private List<IUserActionsActions> m_UserActionsActionsCallbackInterfaces = new List<IUserActionsActions>();
     private readonly InputAction m_UserActions_Dodge;
+    private readonly InputAction m_UserActions_MeleeAttack;
     /// <summary>
     /// Provides access to input actions defined in input action map "User Actions".
     /// </summary>
@@ -638,6 +671,10 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UserActions/Dodge".
         /// </summary>
         public InputAction @Dodge => m_Wrapper.m_UserActions_Dodge;
+        /// <summary>
+        /// Provides access to the underlying input action "UserActions/MeleeAttack".
+        /// </summary>
+        public InputAction @MeleeAttack => m_Wrapper.m_UserActions_MeleeAttack;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -667,6 +704,9 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
             @Dodge.started += instance.OnDodge;
             @Dodge.performed += instance.OnDodge;
             @Dodge.canceled += instance.OnDodge;
+            @MeleeAttack.started += instance.OnMeleeAttack;
+            @MeleeAttack.performed += instance.OnMeleeAttack;
+            @MeleeAttack.canceled += instance.OnMeleeAttack;
         }
 
         /// <summary>
@@ -681,6 +721,9 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
             @Dodge.started -= instance.OnDodge;
             @Dodge.performed -= instance.OnDodge;
             @Dodge.canceled -= instance.OnDodge;
+            @MeleeAttack.started -= instance.OnMeleeAttack;
+            @MeleeAttack.performed -= instance.OnMeleeAttack;
+            @MeleeAttack.canceled -= instance.OnMeleeAttack;
         }
 
         /// <summary>
@@ -758,5 +801,12 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDodge(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MeleeAttack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMeleeAttack(InputAction.CallbackContext context);
     }
 }

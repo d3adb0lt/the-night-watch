@@ -3,6 +3,7 @@ using UnityEngine;
 public class ResetActionFlag : StateMachineBehaviour
 {
     CharacterManager characterManager;
+    PlayerWeaponManager playerWeapon;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -10,6 +11,7 @@ public class ResetActionFlag : StateMachineBehaviour
         if (characterManager == null)
         {
             characterManager = animator.GetComponent<CharacterManager>();
+            playerWeapon = animator.GetComponentInChildren<PlayerWeaponManager>();
         }
 
         // this runs when the action is completed
@@ -17,6 +19,13 @@ public class ResetActionFlag : StateMachineBehaviour
         characterManager.applyRootMotion = false;
         characterManager.canRotate = true;
         characterManager.canMove = true;
+        characterManager.actionCancelable = false;
+        characterManager.isChaining = false;
+        characterManager.chainNum = 0;
+        characterManager.previousInput = PlayerInputType.None;
+
+        playerWeapon.DisableWeaponCollider();
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

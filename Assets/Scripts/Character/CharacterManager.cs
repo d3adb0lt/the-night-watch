@@ -13,6 +13,13 @@ public class CharacterManager : NetworkBehaviour
     public bool applyRootMotion = false;
     public bool canRotate = true;
     public bool canMove = true;
+    public bool actionCancelable = false;
+    public bool isChaining = false;
+
+    [Header("Misc values")]
+    public int chainNum = 0;
+    public PlayerInputType previousInput = PlayerInputType.None;
+
     protected virtual void Awake()
     {
         DontDestroyOnLoad(this);

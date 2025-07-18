@@ -18,7 +18,7 @@ public class CharacterAnimatorManager : MonoBehaviour
     }
 
     public virtual void PlayTargetActionAnimation(string targetAnimation,
-        bool isPerformingAction, bool applyRootMotion = true,
+        bool isPerformingAction, bool actionCancelable, bool isChaining, bool applyRootMotion = true,
         bool canRotate = false, bool canMove = false)
     {
         characterManager.applyRootMotion = applyRootMotion;
@@ -26,8 +26,12 @@ public class CharacterAnimatorManager : MonoBehaviour
 
         // used to stop character from performing new actions in the midst of one
         characterManager.isPerformingAction = isPerformingAction;
+        characterManager.actionCancelable = actionCancelable;
+        characterManager.isChaining = isChaining;
         characterManager.canRotate = canRotate;
         characterManager.canMove = canMove;
+
+
 
         // tell host that an animation was played, and that every client should see that animation too
         characterManager.characterNetworkManager.NotifyServerOfActionAnimationServerRpc(NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);

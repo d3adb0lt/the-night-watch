@@ -3,6 +3,8 @@ using UnityEngine;
 public class PlayerLocoMotionManager : CharacterLocomotionManager
 {
     PlayerManager player;
+    PlayerWeaponManager playerWeapon;
+
     // taken from the player input manager
     [HideInInspector] public float verticalMovement;
     [HideInInspector] public float horizontalMovement;
@@ -23,6 +25,8 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
         base.Awake();
 
         player = GetComponent<PlayerManager>();
+
+        playerWeapon = GetComponentInChildren<PlayerWeaponManager>();
     }
 
     protected override void Update()
@@ -53,7 +57,7 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
             return;
         }
         // ground movement
-        HanldeGroundMovement();
+        HandleGroundMovement();
         HandleRotationMovement();
         // aerial movement
     }
@@ -66,7 +70,7 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
         // clamp movements
     }
 
-    private void HanldeGroundMovement()
+    private void HandleGroundMovement()
     {
         GetMovementValues();
 
@@ -119,29 +123,77 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
 
     public void AttemptToPerformDodge()
     {
-        if (player.isPerformingAction)
+        if (player.isPerformingAction && !player.actionCancelable)
         {
+            // if (PlayerInputBuffer.Instance.GetBufferedInput() != PlayerInputType.Roll)
+            // {
+            //     PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Roll);
+            // }
             return;
         }
 
         // if moving when dodging perform roll else, perform a backstep
-        if (totalMovement > 0)
-        {
             // roll animation
             rollDirection = PlayerCamera.GetInstance().cameraObject.transform.forward * verticalMovement;
             rollDirection += PlayerCamera.GetInstance().cameraObject.transform.right * horizontalMovement;
+
+            //rollDirection = 
             rollDirection.y = 0;
             rollDirection.Normalize();
 
             Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
             player.transform.rotation = playerRotation;
 
-            player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true);
-        }
-        else
+            player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true, false, false);
+
+    }
+
+    /*
+    note to self
+
+    replace buffer with buffer queue for all
+
+    priority right now is to set up a hitbox for the sword and player
+
+    then set up buffer queue
+
+    then implement taking damage and animation for that
+
+    */
+
+    public void AttemptToPerformMeleeAttack(int chainNum)
+    {
+        if (player.isPerformingAction)
         {
-            // back-step animation
-            player.playerAnimatorManager.PlayTargetActionAnimation("Backstep", true);
+            // if any other buffered input other than attack1, add attack1 to the buffer
+            // if (PlayerInputBuffer.Instance.GetBufferedInput() == PlayerInputType.None)
+            // {
+            //     PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack1);
+            // }
+
+
+            //Debug.Log("character cannot perform action");
+            return;
         }
+        //Debug.Log("melee attack performed");
+
+        playerWeapon.EnableWeaponCollider();
+        switch (chainNum)
+        {
+            case 1:
+                playerWeapon.SetWeaponDamage(10);
+                break;
+            case 2:
+                playerWeapon.SetWeaponDamage(20);
+                break;
+            case 3:
+                playerWeapon.SetWeaponDamage(30);
+                break;
+            default:
+                break;
+        }        
+        player.playerAnimatorManager.PlayTargetActionAnimation("MeleeAttack" + chainNum, true, true, true);
+        //player.previousInput = PlayerInputType.Attack1;
+
     }
 }
