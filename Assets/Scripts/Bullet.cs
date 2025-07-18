@@ -2,13 +2,17 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        Rigidbody rb = collision.collider.attachedRigidbody;
-        if (rb != null)
+        if (other.CompareTag("Enemy"))  // Optional, for filtering
         {
-            rb.AddForce(transform.forward * 300f);
+            // Example damage logic
+            EnemyScript enemy = other.GetComponent<EnemyScript>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(10);
+            }
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
     }
 }
