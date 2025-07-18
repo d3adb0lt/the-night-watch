@@ -8,7 +8,7 @@ public class PlayerInputManager : MonoBehaviour
 {
     private static PlayerInputManager instance;
     public PlayerManager playerManager;
-    public PlayerInputBuffer playerInputBuffer;
+    //public PlayerInputBuffer playerInputBuffer;
     UserControls userControls;
 
     [Header("Player Movement Input")]

@@ -4,6 +4,7 @@ public class EnemyChaseAI : MonoBehaviour
 {
     private Transform player;
     private Animator animator;
+    private EnemyWeaponManager enemyWeaponManager;
 
     public float chaseRange = 20f;
     public float attackRange = 6f;
@@ -23,6 +24,9 @@ public class EnemyChaseAI : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
         animator = GetComponent<Animator>();
+        enemyWeaponManager = GetComponentInChildren<EnemyWeaponManager>();
+        enemyWeaponManager.DisableWeaponCollider();
+        
 
         PickNewIdleTarget();
     }
@@ -91,5 +95,15 @@ public class EnemyChaseAI : MonoBehaviour
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         }
+    }
+
+    public void EnableWeaponCollider()
+    {
+        enemyWeaponManager.EnableWeaponCollider();
+    }
+
+    public void DisableWeaponCollider()
+    {
+        enemyWeaponManager.DisableWeaponCollider();
     }
 }

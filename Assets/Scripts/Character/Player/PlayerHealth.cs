@@ -9,9 +9,15 @@ public class PlayerHealth : MonoBehaviour
     public int maxVials = 5;
     public int currentVials = 0;
 
+    private PlayerAnimatorManager playerAnimatorManager;
+
+
+    
+
     private void Start()
     {
         currentHealth = maxHealth;
+        playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
     }
 
     public void TakeDamage(int amount)
@@ -22,7 +28,19 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             Debug.Log("Player died!");
+
+            playerAnimatorManager.PlayTargetActionAnimation("Death", true, false, false);
             //  death logic here
+            // kill player, end game
+
+        }
+        else
+        {
+            playerAnimatorManager.PlayTargetActionAnimation("TakeDamage", true, false, false);
+            
+
+            //clear input buffer
+            PlayerInputBuffer.Instance.ClearBuffer();
         }
     }
 
