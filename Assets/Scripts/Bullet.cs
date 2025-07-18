@@ -2,31 +2,17 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public int damage = 10;
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        Rigidbody rb = collision.collider.attachedRigidbody;
-        if (rb != null)
+        if (other.CompareTag("Enemy"))  // Optional, for filtering
         {
-            rb.AddForce(transform.forward * 300f);
-        }
-
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            EnemyScript enemy = collision.gameObject.GetComponent<EnemyScript>();
+            // Example damage logic
+            EnemyScript enemy = other.GetComponent<EnemyScript>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage);
+                enemy.TakeDamage(10);
             }
+            Destroy(gameObject);
         }
-        else if (collision.gameObject.CompareTag("Spawner"))
-        {
-            EnemySpawner enemySpawner = collision.gameObject.GetComponent<EnemySpawner>();
-            if (enemySpawner != null)
-            {
-                enemySpawner.TakeDamage(damage);
-            }
-        }
-        Destroy(gameObject);
     }
 }

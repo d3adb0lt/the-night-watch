@@ -3,20 +3,27 @@ using UnityEngine;
 public class EnemyChaseAI : MonoBehaviour
 {
     private Transform player;
-    public float chaseRange = 15f;
-    public float speed = 3f;
+    private Animator animator;
+
+    public float chaseRange = 20f;
+    public float attackRange = 6f;
+    public float speed = 2.2f;
+    public float idleSpeed = 1f;
 
     private bool isChasing = false;
+    private bool isAttacking = false;
 
+    // Idle patrol variables
     private Vector3 idleTarget;
     private float idleTimer = 0f;
     public float idleMoveDuration = 2f;
     public float idleWaitTime = 2f;
-    public float idleSpeed = 1f;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        animator = GetComponent<Animator>();
+
         PickNewIdleTarget();
     }
 
@@ -26,16 +33,20 @@ public class EnemyChaseAI : MonoBehaviour
 
         float distance = Vector3.Distance(player.position, transform.position);
 
-        if (distance <= chaseRange)
-        {
-            isChasing = true;
-        }
-        else
-        {
-            isChasing = false;
-        }
+        // Update state flags
+        isChasing = distance <= chaseRange;
+        isAttacking = isChasing && distance <= attackRange;
 
-        if (isChasing)
+        // Set Animator parameters
+        animator.SetBool("isChasing", isChasing);
+        animator.SetBool("isAttacking", isAttacking);
+
+        if (isAttacking)
+        {
+            FaceTarget(player.position);
+            // No movement while attacking
+        }
+        else if (isChasing)
         {
             ChasePlayer();
         }
@@ -47,47 +58,38 @@ public class EnemyChaseAI : MonoBehaviour
 
     void ChasePlayer()
     {
-        Vector3 direction = (player.position - transform.position).normalized;
-
-        if (direction != Vector3.zero)
-        {
-            // Smoothly rotate towards the player
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-        }
-
-        // Move forward in the facing direction
-        transform.position += transform.forward * speed * Time.deltaTime;
+        FaceTarget(player.position);
     }
 
     void IdleMovement()
     {
-        idleTimer += Time.deltaTime;
+        FaceTarget(idleTarget);
+        // idleTimer += Time.deltaTime;
 
-        Vector3 direction = (idleTarget - transform.position).normalized;
+        // FaceTarget(idleTarget);
+        // transform.position += transform.forward * idleSpeed * Time.deltaTime;
 
-        if (direction != Vector3.zero)
-        {
-            // this rotates the character
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-        }
-
-        // move foward motion
-        transform.position += transform.forward * idleSpeed * Time.deltaTime;
-
-        
-        if (Vector3.Distance(transform.position, idleTarget) < 0.5f || idleTimer >= idleMoveDuration)
-        {
-            idleTimer = 0f;
-            Invoke(nameof(PickNewIdleTarget), idleWaitTime);
-        }
+        // if (Vector3.Distance(transform.position, idleTarget) < 0.5f || idleTimer >= idleMoveDuration)
+        // {
+        //     idleTimer = 0f;
+        //     Invoke(nameof(PickNewIdleTarget), idleWaitTime);
+        // }
     }
 
     void PickNewIdleTarget()
     {
-       
-        Vector3 randomDirection = new Vector3(Random.Range(-3f, 3f), 0, Random.Range(-3f, 3f));
-        idleTarget = transform.position + randomDirection;
+        idleTarget = transform.position;
+        // Vector3 randomDirection = new Vector3(Random.Range(-3f, 3f), 0, Random.Range(-3f, 3f));
+        // idleTarget = transform.position + randomDirection;
+    }
+
+    void FaceTarget(Vector3 target)
+    {
+        Vector3 direction = (target - transform.position).normalized;
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        }
     }
 }
