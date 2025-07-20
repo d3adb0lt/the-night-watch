@@ -47,7 +47,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    void SetPlayerHealthText()
+    public void SetPlayerHealthText()
     {
         playerHealthText.text = "HP: " + playerHealth.ToString() + "/" + maxHealth.ToString();
         playerHealthBar.value = playerHealth;
@@ -94,6 +94,7 @@ public class PlayerHealth : MonoBehaviour
         if (inventory != null && inventory.vialCount > 0 && playerHealth < maxHealth)
         {
             inventory.UseVial(1); // Use from inventory system
+            //currentVials = inventory.vialCount;
             playerHealth = Mathf.Min(playerHealth + healAmount, maxHealth);
             SetPlayerHealthText();
             Debug.Log("Used a vial! Current health: " + playerHealth + ", Vials left: " + inventory.vialCount);
@@ -126,9 +127,10 @@ public class PlayerHealth : MonoBehaviour
     public void AddVial(int amount)
 {
     PlayerInventory inventory = GetComponent<PlayerInventory>();
-    if (inventory != null)
-    {
-        inventory.AddVial(amount); // Add to inventory system
+        if (inventory != null)
+        {
+            inventory.AddVial(amount); // Add to inventory system
+            //currentVials = inventory.vialCount;
     }
 }
 }
