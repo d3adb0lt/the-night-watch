@@ -68,16 +68,37 @@ public class PlayerHealth : MonoBehaviour
         SetPlayerHealthText();
     }
 
+    // public void UseVial()
+    // {
+    //     if (currentVials > 0 && playerHealth < maxHealth)
+    //     {
+    //         currentVials--;
+    //         playerHealth = Mathf.Min(playerHealth + healAmount, maxHealth);
+    //         SetPlayerHealthText();
+    //         Debug.Log("Used a vial! Current health: " + playerHealth + ", Vials left: " + currentVials);
+    //     }
+    //     else if (currentVials <= 0)
+    //     {
+    //         Debug.Log("No vials left!");
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("Health is already full!");
+    //     }
+    // }
+
     public void UseVial()
     {
-        if (currentVials > 0 && playerHealth < maxHealth)
+        PlayerInventory inventory = GetComponent<PlayerInventory>();
+
+        if (inventory != null && inventory.vialCount > 0 && playerHealth < maxHealth)
         {
-            currentVials--;
+            inventory.UseVial(1); // Use from inventory system
             playerHealth = Mathf.Min(playerHealth + healAmount, maxHealth);
             SetPlayerHealthText();
-            Debug.Log("Used a vial! Current health: " + playerHealth + ", Vials left: " + currentVials);
+            Debug.Log("Used a vial! Current health: " + playerHealth + ", Vials left: " + inventory.vialCount);
         }
-        else if (currentVials <= 0)
+        else if (inventory == null || inventory.vialCount <= 0)
         {
             Debug.Log("No vials left!");
         }
@@ -86,7 +107,7 @@ public class PlayerHealth : MonoBehaviour
             Debug.Log("Health is already full!");
         }
     }
-    
+
     // Temporary end-game logic
     public void EndGame()
     {
@@ -96,9 +117,18 @@ public class PlayerHealth : MonoBehaviour
     }
 
     // Add a vial to the player
+    // public void AddVial(int amount)
+    // {
+    //     currentVials = Mathf.Min(currentVials + amount, maxVials);
+    //     Debug.Log("Picked up vial! Vials now: " + currentVials);
+    // }
+    
     public void AddVial(int amount)
+{
+    PlayerInventory inventory = GetComponent<PlayerInventory>();
+    if (inventory != null)
     {
-        currentVials = Mathf.Min(currentVials + amount, maxVials);
-        Debug.Log("Picked up vial! Vials now: " + currentVials);
+        inventory.AddVial(amount); // Add to inventory system
     }
+}
 }
