@@ -1,13 +1,25 @@
 using UnityEngine;
-
+using TMPro;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
+    //health and vial
+    public float playerHealth;
+    public float maxHealth = 100;
     public int healAmount = 25;
-    public int maxHealth = 100;
-    public int currentHealth;
-    public int maxVials = 5;
+    public int maxVials = 4;
     public int currentVials = 0;
+
+    //UI Elements
+    public GameObject generalUIParent;
+    public GameObject playerRoot;
+    public Canvas loseTextObject;
+
+    //health bar
+    public Slider playerHealthBar;
+
+    public TextMeshProUGUI playerHealthText;
 
     private PlayerAnimatorManager playerAnimatorManager;
 
@@ -52,21 +64,74 @@ public class PlayerHealth : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
+        //for testing purposes, subtract health
+        if (Input.GetKeyDown(KeyCode.Minus))
+        {
+            PlayerChangeHealth(-10);
+            if (playerHealth < 0) playerHealth = 0;
+            SetPlayerHealthText();
+        }
+
+        // Use Vial when pressing H
+        if (Input.GetKeyDown(KeyCode.F))
         {
             UseVial();
         }
     }
 
+    public void SetPlayerHealthText()
+    {
+        playerHealthText.text = "HP: " + playerHealth.ToString() + "/" + maxHealth.ToString();
+        playerHealthBar.value = playerHealth;
+        playerHealthBar.maxValue = maxHealth;
+        if (playerHealth <= 0)
+        {
+            EndGame();
+        }
+    }
+
+    public void PlayerChangeHealth(float healNum)
+    {
+        playerHealth += healNum;
+        if (playerHealth < 0)
+        {
+            playerHealth = 0;
+        }
+        SetPlayerHealthText();
+    }
+
+    // public void UseVial()
+    // {
+    //     if (currentVials > 0 && playerHealth < maxHealth)
+    //     {
+    //         currentVials--;
+    //         playerHealth = Mathf.Min(playerHealth + healAmount, maxHealth);
+    //         SetPlayerHealthText();
+    //         Debug.Log("Used a vial! Current health: " + playerHealth + ", Vials left: " + currentVials);
+    //     }
+    //     else if (currentVials <= 0)
+    //     {
+    //         Debug.Log("No vials left!");
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("Health is already full!");
+    //     }
+    // }
+
     public void UseVial()
     {
-        if (currentVials > 0 && currentHealth < maxHealth)
+        PlayerInventory inventory = GetComponent<PlayerInventory>();
+
+        if (inventory != null && inventory.vialCount > 0 && playerHealth < maxHealth)
         {
-            currentVials--;
-            currentHealth = Mathf.Min(currentHealth + healAmount, maxHealth);
-            Debug.Log("Used a vial! Current health: " + currentHealth + ", Vials left: " + currentVials);
+            inventory.UseVial(1); // Use from inventory system
+            //currentVials = inventory.vialCount;
+            playerHealth = Mathf.Min(playerHealth + healAmount, maxHealth);
+            SetPlayerHealthText();
+            Debug.Log("Used a vial! Current health: " + playerHealth + ", Vials left: " + inventory.vialCount);
         }
-        else if (currentVials <= 0)
+        else if (inventory == null || inventory.vialCount <= 0)
         {
             Debug.Log("No vials left!");
         }
@@ -76,5 +141,28 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-}
+    // Temporary end-game logic
+    public void EndGame()
+    {
+        playerRoot.gameObject.SetActive(false);
+        loseTextObject.gameObject.SetActive(true);
+        generalUIParent.gameObject.SetActive(false);
+    }
 
+    // Add a vial to the player
+    // public void AddVial(int amount)
+    // {
+    //     currentVials = Mathf.Min(currentVials + amount, maxVials);
+    //     Debug.Log("Picked up vial! Vials now: " + currentVials);
+    // }
+    
+    public void AddVial(int amount)
+{
+    PlayerInventory inventory = GetComponent<PlayerInventory>();
+        if (inventory != null)
+        {
+            inventory.AddVial(amount); // Add to inventory system
+            //currentVials = inventory.vialCount;
+    }
+}
+}

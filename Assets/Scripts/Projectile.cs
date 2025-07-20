@@ -27,10 +27,10 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerHealthManagerScript playerHealthManagerScript = other.GetComponent<PlayerHealthManagerScript>();
-            if (playerHealthManagerScript != null)
+            PlayerHealth playerHealthScript = other.GetComponent<PlayerHealth>();
+            if (playerHealthScript != null)
             {
-                playerHealthManagerScript.PlayerChangeHealth(-damage);
+                playerHealthScript.PlayerChangeHealth(-damage);
             }
             Destroy(gameObject);
         }
