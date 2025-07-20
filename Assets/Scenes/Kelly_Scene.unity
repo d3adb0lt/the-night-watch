@@ -610,11 +610,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1385d5bf43c04dffb11e1a628509df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healAmount: 25
+  playerHealth: 0
   maxHealth: 100
-  currentHealth: 0
+  healAmount: 25
   maxVials: 5
   currentVials: 0
+  generalUIParent: {fileID: 0}
+  playerRoot: {fileID: 0}
+  healthUI: {fileID: 0}
+  loseTextObject: {fileID: 0}
+  healCharges: 0
+  maxCharges: 3
+  playerHealthBar: {fileID: 0}
+  playerHealthText: {fileID: 0}
 --- !u!114 &935215844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -847,6 +855,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2666145412548694069, guid: ead8b5c7200e847bd8c6eed6f38165ec, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2427792393
+      objectReference: {fileID: 0}
     - target: {fileID: 3115806212065682029, guid: ead8b5c7200e847bd8c6eed6f38165ec, type: 3}
       propertyPath: m_IsKinematic
       value: 0
@@ -862,6 +874,10 @@ PrefabInstance:
     - target: {fileID: 3247072468073538237, guid: ead8b5c7200e847bd8c6eed6f38165ec, type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123598303145232290, guid: ead8b5c7200e847bd8c6eed6f38165ec, type: 3}
+      propertyPath: playerHealth
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7681759490105508725, guid: ead8b5c7200e847bd8c6eed6f38165ec, type: 3}
       propertyPath: m_LocalPosition.x
