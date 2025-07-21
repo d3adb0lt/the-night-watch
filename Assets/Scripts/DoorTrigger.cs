@@ -9,8 +9,10 @@ public class DoorTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             PlayerInventory inventory = other.GetComponent<PlayerInventory>();
-            if (inventory != null && inventory.hasKey)
+            if (inventory != null && inventory.keyCount > 0)
             {
+                inventory.keyCount--;
+                inventory.UpdateDisplay();
                 door.OpenDoor();
             }
             else

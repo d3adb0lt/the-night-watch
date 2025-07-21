@@ -8,16 +8,9 @@ public class Intro : MonoBehaviour
     {
         if (player.CompareTag("Player"))
         {
+            Debug.Log("EXIT");
             bossController.BossIntro();
-        }
-    }
-
-    void OnTriggerEnter(Collider boss)
-    {
-        if (boss.CompareTag("Boss"))
-        {
-            bossController.IntroSequence();
-            // enabled = false;
+            enabled = false;
         }
     }
 }

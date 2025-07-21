@@ -9,7 +9,7 @@ public class KeyPickup : MonoBehaviour
             PlayerInventory inventory = other.GetComponent<PlayerInventory>();
             if (inventory != null)
             {
-                inventory.hasKey = true;
+                inventory.AddKey(1);
                 Debug.Log("Key collected!");
                 Destroy(gameObject);
             }

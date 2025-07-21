@@ -9,10 +9,10 @@ public class HealthPickup : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            PlayerHealth player = other.GetComponent<PlayerHealth>();
-            if (player != null)
+            PlayerInventory inventory = other.GetComponent<PlayerInventory>();
+            if (inventory != null)
             {
-                player.AddVial(vialAmount);
+                inventory.AddVial(vialAmount);
                 Destroy(gameObject);
             }
         }

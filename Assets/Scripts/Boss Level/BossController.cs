@@ -11,7 +11,7 @@ public class BossController : MonoBehaviour
     public float attackRange = 2.0f;
     public float attackCooldown = 1.5f;
     private float lastAttackTime = 0;
-    private bool isChasing = false;
+    private bool isChasing;
 
     public GameObject introTextUI;
     public GameObject bossHealthBar;
@@ -26,11 +26,13 @@ public class BossController : MonoBehaviour
         introTextUI.SetActive(true);
         bossHealthBar.SetActive(false);
         bossText.SetActive(false);
+
+        isChasing = false;
     }
 
     void Update()
     {
-        if (player != null && isChasing)
+        if (player != null && isChasing == true)
         {
             agent.SetDestination(player.position);
 
@@ -41,17 +43,12 @@ public class BossController : MonoBehaviour
 
     public void BossIntro()
     {
-        isChasing = true;
-    }
-
-    public void IntroSequence()
-    {
-        isChasing = false;
         animator.SetTrigger("Jump");
     }
 
     public void OnRoarComplete()
     {
+        Debug.Log("ON ROAR COMPLETE");
         introTextUI.SetActive(false);
         bossHealthBar.SetActive(true);
         bossText.SetActive(true);
