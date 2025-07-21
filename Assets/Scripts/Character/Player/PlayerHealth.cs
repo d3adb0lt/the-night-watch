@@ -28,16 +28,16 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        playerHealth = maxHealth;
+        currentHealth = maxHealth;
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
     }
 
     public void TakeDamage(int amount)
     {
-        playerHealth -= amount;
-        Debug.Log("Player took damage! Current health: " + playerHealth);
+        currentHealth -= amount;
+        Debug.Log("Player took damage! Current health: " + currentHealth);
 
-        if (playerHealth <= 0)
+        if (currentHealth <= 0)
         {
             Debug.Log("Player died!");
 
@@ -123,17 +123,21 @@ public class PlayerHealth : MonoBehaviour
         loseTextObject.gameObject.SetActive(true);
         generalUIParent.gameObject.SetActive(false);
     }
+
+    // Add a vial to the player
+    // public void AddVial(int amount)
+    // {
+    //     currentVials = Mathf.Min(currentVials + amount, maxVials);
+    //     Debug.Log("Picked up vial! Vials now: " + currentVials);
+    // }
     
-
-    //commented this out for now since it was already declared and i need to compile the files
-
-//     public void AddVial(int amount)
-// {
-//     PlayerInventory inventory = GetComponent<PlayerInventory>();
-//         if (inventory != null)
-//         {
-//             inventory.AddVial(amount); // Add to inventory system
-//             //currentVials = inventory.vialCount;
-//     }
-// }
+    public void AddVial(int amount)
+{
+    PlayerInventory inventory = GetComponent<PlayerInventory>();
+        if (inventory != null)
+        {
+            inventory.AddVial(amount); // Add to inventory system
+            currentVials = inventory.vialCount;
+    }
+}
 }
