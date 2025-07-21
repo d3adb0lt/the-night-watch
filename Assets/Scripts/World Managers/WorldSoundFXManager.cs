@@ -8,6 +8,17 @@ using UnityEngine;
 
         [Header("Action Sounds")]
         public AudioClip rollSFX;
+        public AudioClip damageSFXPlayer;
+        public AudioClip damageSFXEnemy;
+        public AudioClip attack1;
+        public AudioClip attack2;
+        public AudioClip attack3;
+        public AudioClip enemyAttack;
+
+        [Header("Enemy Noises")]
+        public AudioClip groanSFXEnemy;
+        public AudioClip deathSFXEnemy;
+
 
         private void Awake()
         {

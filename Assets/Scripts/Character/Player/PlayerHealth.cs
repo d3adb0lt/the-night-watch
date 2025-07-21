@@ -124,13 +124,16 @@ public class PlayerHealth : MonoBehaviour
         generalUIParent.gameObject.SetActive(false);
     }
     
-    public void AddVial(int amount)
-{
-    PlayerInventory inventory = GetComponent<PlayerInventory>();
-        if (inventory != null)
-        {
-            inventory.AddVial(amount); // Add to inventory system
-            //currentVials = inventory.vialCount;
-    }
-}
+
+    //commented this out for now since it was already declared and i need to compile the files
+
+//     public void AddVial(int amount)
+// {
+//     PlayerInventory inventory = GetComponent<PlayerInventory>();
+//         if (inventory != null)
+//         {
+//             inventory.AddVial(amount); // Add to inventory system
+//             //currentVials = inventory.vialCount;
+//     }
+// }
 }

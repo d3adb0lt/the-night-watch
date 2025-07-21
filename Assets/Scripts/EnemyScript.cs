@@ -27,9 +27,9 @@ public class EnemyScript : MonoBehaviour
     public void TakeDamage(float damage)
     {
         if (isDead) return;
-        enemyHealth -= damage;
+        currentHealth -= damage;
 
-        if (enemyHealth < 0) enemyHealth = 0;
+        if (currentHealth < 0) currentHealth = 0;
 
         animator.SetTrigger("TakeDamage");
 

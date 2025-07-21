@@ -773,6 +773,7 @@ MonoBehaviour:
   canMove: 1
   actionCancelable: 0
   isChaining: 0
+  isInvulnerable: 0
   chainNum: 0
   previousInput: 0
   playerAnimatorManager: {fileID: 0}
@@ -869,7 +870,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.92
-  m_Radius: 0.3
+  m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08

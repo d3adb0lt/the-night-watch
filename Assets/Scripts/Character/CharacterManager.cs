@@ -13,6 +13,7 @@ public class CharacterManager : MonoBehaviour
     public bool canMove = true;
     public bool actionCancelable = false;
     public bool isChaining = false;
+    public bool isInvulnerable = false;
 
     [Header("Misc values")]
     public int chainNum = 0;
@@ -32,5 +33,15 @@ public class CharacterManager : MonoBehaviour
 
     protected virtual void LateUpdate()
     {     
+    }
+
+    public void EnableInvulnerability()
+    {
+        this.isInvulnerable = true;
+    }
+
+    public void DisableInvulnerability()
+    {
+        this.isInvulnerable = false;
     }
 }
