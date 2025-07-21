@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 public class PlayerInputManager : MonoBehaviour
 {
     private static PlayerInputManager instance;
-    public PlayerManager playerManager;
+    [HideInInspector] public PlayerManager playerManager;
     //public PlayerInputBuffer playerInputBuffer;
-    UserControls userControls;
+    private UserControls userControls;
 
     [Header("Player Movement Input")]
     [SerializeField] Vector2 movement;
@@ -34,22 +31,15 @@ public class PlayerInputManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
+            return;
         }
     }
 
-    private void Start()
-    {
-        DontDestroyOnLoad(gameObject);
-
-        // when scene changes, this runs once
-        SceneManager.activeSceneChanged += OnSceneChange;
-
-        instance.enabled = false;
-    }
     public static PlayerInputManager GetInstance()
     {
         return instance;
@@ -59,107 +49,75 @@ public class PlayerInputManager : MonoBehaviour
         PlayerInputManager.instance = instance;
     }
 
-    private void OnSceneChange(Scene currScene, Scene comingScene)
+    public void RegisterPlayer(PlayerManager pm)
     {
-        // loading into world scene? enable player inputs
-        if (comingScene.buildIndex == WorldSaveGameManager.GetInstance().GetWorldSceneIndex())
-        {
-            // input manager enabled
-            instance.enabled = true;
-        }
-        // have to be in a "non-playable area", i.e. main menu
-        // player cannot move during menu scene
-        else
-        {
-            instance.enabled = false;
-        }
+        playerManager = pm;
     }
 
     // called when this script is active
-private void OnEnable()
-{
-    if (userControls == null)
+    private void OnEnable()
+    {
+        if (userControls == null)
+            SetupUserControls();
+
+        userControls.Enable();
+    }
+
+    private void SetupUserControls()
     {
         userControls = new UserControls();
 
-        userControls.UserMovement.Movement.performed += i => 
-            movement = i.ReadValue<Vector2>();
+        userControls.UserMovement.Movement.performed += ctx => movement     = ctx.ReadValue<Vector2>();
+        userControls.UserMovement.Movement.canceled  += ctx => movement     = Vector2.zero;
 
-        userControls.UserCamera.Movement.performed += i => 
-            cameraInput = i.ReadValue<Vector2>();
+        userControls.UserCamera.Movement.performed   += ctx => cameraInput = ctx.ReadValue<Vector2>();
+        userControls.UserCamera.Movement.canceled    += ctx => cameraInput = Vector2.zero;
 
-        userControls.UserActions.Dodge.performed += i =>
+        userControls.UserActions.Dodge.performed += _ =>
         {
-            if (playerManager.isPerformingAction)
-            {
+            if (playerManager != null && playerManager.isPerformingAction)
                 PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Roll);
-            }
             else
-            {
                 dodgeInput = true;
-            }
         };
 
-        userControls.UserActions.MeleeAttack.performed += i =>
+        userControls.UserActions.MeleeAttack.performed += _ =>
         {
-            if (playerManager.isPerformingAction)
+            if (playerManager != null && playerManager.isPerformingAction)
             {
-                if (chainNum == 0)
+                switch (chainNum)
                 {
-                    PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack1);
-                    Debug.Log("a1 queued");
-                } 
-                else if (chainNum == 1)
-                {
-                    PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack2);
-                    Debug.Log("a2 queued");
-                } 
-                else if (chainNum == 2)
-                {
-                    PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack3);
-                    Debug.Log("a3 queued");
+                    case 0: PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack1); break;
+                    case 1: PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack2); break;
+                    case 2: PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack3); break;
+                    default: PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack1); break;
                 }
-                else if (chainNum == 3)
-                {
-                    PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack1);
-                    Debug.Log("loop back, a1 queued");
-                }
-
-
             }
             else
             {
                 attackInput = true;
-                chainNum = 1;
+                chainNum    = 1; // start new combo chain
             }
         };
     }
-
-    userControls.Enable();
-}
 
     // called whenever the game is minimized or maximized
     // game maximized controls are enabled, game minimized controls disabled
     private void OnApplicationFocus(bool focus)
     {
-        if (enabled)
-        {
-            if (focus)
-            {
-                userControls.Enable();
-            }
-            else
-            {
-                userControls.Disable();
-            }
-        }
+        if (!enabled || userControls == null)
+            return;
+
+        if (focus)
+            userControls.Enable();
+        else
+            userControls.Disable();
     }
 
     private void OnDestroy()
     {
-        // Unsubscribe from event, to prevent memory leak
-        SceneManager.activeSceneChanged -= OnSceneChange;
-
+        if (instance == this)
+            instance = null;
     }
 
     private void Update()
@@ -175,7 +133,7 @@ private void OnEnable()
         HandleDodgeInput();
         HandleMeleeAttackInput();
 
-        // methods for testing
+        // hotkeys for testing
         TestDeathAndDamageAnimPlayer();
     }
 
@@ -200,12 +158,10 @@ private void OnEnable()
             totalMovement = 1;
         }
 
-        if (playerManager == null)
+        if (playerManager != null)
         {
-            return;
+            playerManager.playerAnimatorManager.UpdateAnimatorMovementParameters(0, totalMovement);
         }
-
-        playerManager.playerAnimatorManager.UpdateAnimatorMovementParameters(0, totalMovement);
     }
 
     private void HandleCameraMoveInput()
@@ -283,6 +239,7 @@ private void OnEnable()
 
     private void ReadInputBuffer()
     {
+        if (playerManager == null) return;
         if (!playerManager.isPerformingAction)
         {
             bufferedInput = PlayerInputBuffer.Instance.GetBufferedInput();

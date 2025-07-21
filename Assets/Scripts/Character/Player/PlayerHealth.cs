@@ -28,16 +28,16 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = maxHealth;
+        playerHealth = maxHealth;
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
     }
 
     public void TakeDamage(int amount)
     {
-        currentHealth -= amount;
-        Debug.Log("Player took damage! Current health: " + currentHealth);
+        playerHealth -= amount;
+        Debug.Log("Player took damage! Current health: " + playerHealth);
 
-        if (currentHealth <= 0)
+        if (playerHealth <= 0)
         {
             Debug.Log("Player died!");
 
@@ -56,12 +56,6 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public void AddVial(int amount)
-    {
-        currentVials = Mathf.Min(currentVials + amount, maxVials);
-        Debug.Log("Picked up vial! Vials now: " + currentVials);
-    }
-
     private void Update()
     {
         //for testing purposes, subtract health
@@ -73,7 +67,7 @@ public class PlayerHealth : MonoBehaviour
         }
 
         // Use Vial when pressing H
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.H))
         {
             UseVial();
         }
@@ -99,25 +93,6 @@ public class PlayerHealth : MonoBehaviour
         }
         SetPlayerHealthText();
     }
-
-    // public void UseVial()
-    // {
-    //     if (currentVials > 0 && playerHealth < maxHealth)
-    //     {
-    //         currentVials--;
-    //         playerHealth = Mathf.Min(playerHealth + healAmount, maxHealth);
-    //         SetPlayerHealthText();
-    //         Debug.Log("Used a vial! Current health: " + playerHealth + ", Vials left: " + currentVials);
-    //     }
-    //     else if (currentVials <= 0)
-    //     {
-    //         Debug.Log("No vials left!");
-    //     }
-    //     else
-    //     {
-    //         Debug.Log("Health is already full!");
-    //     }
-    // }
 
     public void UseVial()
     {
@@ -148,13 +123,6 @@ public class PlayerHealth : MonoBehaviour
         loseTextObject.gameObject.SetActive(true);
         generalUIParent.gameObject.SetActive(false);
     }
-
-    // Add a vial to the player
-    // public void AddVial(int amount)
-    // {
-    //     currentVials = Mathf.Min(currentVials + amount, maxVials);
-    //     Debug.Log("Picked up vial! Vials now: " + currentVials);
-    // }
     
     public void AddVial(int amount)
 {

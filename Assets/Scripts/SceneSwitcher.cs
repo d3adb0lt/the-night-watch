@@ -9,7 +9,12 @@ public class SceneSwitcher : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            SceneManager.LoadScene(sceneToLoad);
+            LoadScene();
         }
+    }
+
+    public void LoadScene()
+    {
+        SceneManager.LoadScene(sceneToLoad);
     }
 }

@@ -30,10 +30,5 @@ public class CharacterAnimatorManager : MonoBehaviour
         characterManager.isChaining = isChaining;
         characterManager.canRotate = canRotate;
         characterManager.canMove = canMove;
-
-
-
-        // tell host that an animation was played, and that every client should see that animation too
-        characterManager.characterNetworkManager.NotifyServerOfActionAnimationServerRpc(NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
     }
 }
