@@ -801,9 +801,6 @@ PrefabInstance:
       addedObject: {fileID: -5169429021755588651}
     - targetCorrespondingSourceObject: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1935297272213869236}
-    - targetCorrespondingSourceObject: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2883409164459427527}
     - targetCorrespondingSourceObject: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       insertIndex: -1
@@ -941,6 +938,7 @@ MonoBehaviour:
   canMove: 1
   actionCancelable: 0
   isChaining: 0
+  isInvulnerable: 0
   chainNum: 0
   previousInput: 0
   playerAnimatorManager: {fileID: 0}
@@ -1025,32 +1023,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1385d5bf43c04dffb11e1a628509df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healAmount: 25
+  playerHealth: 0
   maxHealth: 100
-  currentHealth: 0
+  healAmount: 25
   maxVials: 5
   currentVials: 0
---- !u!114 &1935297272213869236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7238922262689884611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80e7955b3b07aff4dbf92aa6c59da96b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerHealth: 0
-  maxHealth: 0
-  healCharges: 0
-  maxCharges: 0
   generalUIParent: {fileID: 0}
-  playerRoot: {fileID: 7238922262689884611}
-  healthUI: {fileID: 0}
-  healAmount: 0
+  playerRoot: {fileID: 0}
   loseTextObject: {fileID: 0}
+  playerHealthBar: {fileID: 0}
+  playerHealthText: {fileID: 0}
 --- !u!114 &2883409164459427527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1063,7 +1045,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc1198ec8daf4e4bb61418d2d73c34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyCount: 0
+  vialCount: 0
   hasKey: 0
+  keyBox: {fileID: 0}
+  keyCountText: {fileID: 0}
+  vialBox: {fileID: 0}
+  vialCountText: {fileID: 0}
+  keySprite: {fileID: 0}
+  vialSprite: {fileID: 0}
 --- !u!143 &2147937641102611329
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1083,7 +1073,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.92
-  m_Radius: 0.3
+  m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08

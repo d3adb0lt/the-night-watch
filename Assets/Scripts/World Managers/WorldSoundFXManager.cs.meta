@@ -1,2 +1,20 @@
 fileFormatVersion: 2
 guid: 5f3d7e84d0e853f4dbb55f1474b080ac
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - rollSFX: {fileID: 8300000, guid: 09cad5736ce69a246b59ab0cc34d0520, type: 3}
+  - damageSFXPlayer: {fileID: 8300000, guid: ee01496785ea4cb4ab39fafee4f88ed9, type: 3}
+  - damageSFXEnemy: {fileID: 8300000, guid: 0b1fd0b9b98c0f241bea476013fedac1, type: 3}
+  - attack1: {fileID: 8300000, guid: 0d6392d211034894c829cfcc9b9194e1, type: 3}
+  - attack2: {fileID: 8300000, guid: 1bbd0679c4407754db64ab340d36d1ec, type: 3}
+  - attack3: {fileID: 8300000, guid: e66120bdbe3db7e408807dca6c9f4b88, type: 3}
+  - enemyAttack: {fileID: 8300000, guid: ee01496785ea4cb4ab39fafee4f88ed9, type: 3}
+  - groanSFXEnemy: {fileID: 8300000, guid: ebb96c703224744479e6294bd49515d9, type: 3}
+  - deathSFXEnemy: {fileID: 8300000, guid: 1d92c5ac0e056b045b4461b147f95be5, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
