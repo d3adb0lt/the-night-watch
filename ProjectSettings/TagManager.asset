@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 3
   tags:
   - Enemy
+  - Spawner
+  - HealthPickup
+  - Key
+  - Fist
+  - Boss
   layers:
   - Default
   - TransparentFX

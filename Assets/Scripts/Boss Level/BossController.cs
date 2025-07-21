@@ -11,11 +11,19 @@ public class BossController : MonoBehaviour
     public float attackRange = 2.0f;
     public float attackCooldown = 1.5f;
     private float lastAttackTime = 0;
-    private bool isChasing = false;
+    private bool isChasing;
 
     public GameObject introTextUI;
     public GameObject bossHealthBar;
     public GameObject bossText;
+
+    public AudioSource audioSource;
+    public AudioClip eatAudio; 
+    public AudioClip roarAudio;
+    public AudioClip punchAudio;
+    public AudioClip walkAudio;
+    public AudioClip deathAudio;
+
 
     void Start()
     {
@@ -26,35 +34,63 @@ public class BossController : MonoBehaviour
         introTextUI.SetActive(true);
         bossHealthBar.SetActive(false);
         bossText.SetActive(false);
+
+        isChasing = false;
     }
 
     void Update()
     {
-        if (player != null && isChasing)
+        if (player != null && isChasing == true)
         {
             agent.SetDestination(player.position);
+            agent.isStopped = false;
 
             float speed = agent.velocity.magnitude;
             animator.SetFloat("Speed", speed);
+
+            float distance = Vector3.Distance(transform.position, player.position); 
+            if (distance <= attackRange && ((Time.time - lastAttackTime) >= attackCooldown))
+            {
+                agent.isStopped = true;
+                animator.SetTrigger("Punch");
+                lastAttackTime = Time.time;
+            }
+        }
+
+        // INTEGRATION TO DO - add end of game logic here
+        if (bossHealth.currBossHealth == 0)
+        {
+            animator.SetTrigger("Die");
         }
     }
 
     public void BossIntro()
     {
-        isChasing = true;
-    }
-
-    public void IntroSequence()
-    {
-        isChasing = false;
         animator.SetTrigger("Jump");
     }
 
     public void OnRoarComplete()
     {
+        Debug.Log("ON ROAR COMPLETE");
         introTextUI.SetActive(false);
         bossHealthBar.SetActive(true);
         bossText.SetActive(true);
         isChasing = true;
+    }
+
+    void OnTriggerEnter (Collider player)
+    {
+        if (this.CompareTag("Fist") && player.CompareTag("Player"))
+        {
+            // INTEGRATION TO DO - have player take damage from collision with boss punch
+        }
+    }
+
+    public void PlaySfx(AudioClip audio)
+    {
+        if (audio != null)
+        {
+            audioSource.PlayOneShot(audio);
+        }
     }
 }

@@ -30,16 +30,13 @@ public class BossHealth : MonoBehaviour
         UpdateBossHealthUI();
     }
 
-    void Update()
+    // INTEGRATION TO DO - ensure this is the proper way for the boss to take damage from player attack
+    // "this" collider is the boss's hitbox, "bullet" collider is from the player (i think)
+    void OnTriggerEnter(Collider bullet)
     {
-        // FOR TESTING ONLY, replace with actual player attack later
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {
+        if (this.CompareTag("Boss") && bullet.CompareTag("Bullet"))
+        {
             BossTakeDamage(12.5f);
-        }
-        
-        // FOR TESTING ONLY, replace with boss healing later
-        if (Input.GetKeyDown(KeyCode.Alpha2)) {
-            BossTakeDamage(-8.5f);
         }
     }
 }
