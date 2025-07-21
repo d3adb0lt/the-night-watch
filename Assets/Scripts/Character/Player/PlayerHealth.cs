@@ -28,16 +28,16 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = maxHealth;
+        playerHealth = maxHealth;
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
     }
 
     public void TakeDamage(int amount)
     {
-        currentHealth -= amount;
-        Debug.Log("Player took damage! Current health: " + currentHealth);
+        playerHealth -= amount;
+        Debug.Log("Player took damage! Current health: " + playerHealth);
 
-        if (currentHealth <= 0)
+        if (playerHealth <= 0)
         {
             Debug.Log("Player died!");
 
@@ -156,13 +156,16 @@ public class PlayerHealth : MonoBehaviour
     //     Debug.Log("Picked up vial! Vials now: " + currentVials);
     // }
     
-    public void AddVial(int amount)
-{
-    PlayerInventory inventory = GetComponent<PlayerInventory>();
-        if (inventory != null)
-        {
-            inventory.AddVial(amount); // Add to inventory system
-            //currentVials = inventory.vialCount;
-    }
-}
+
+    //commented this out for now since it was already declared and i need to compile the files
+
+//     public void AddVial(int amount)
+// {
+//     PlayerInventory inventory = GetComponent<PlayerInventory>();
+//         if (inventory != null)
+//         {
+//             inventory.AddVial(amount); // Add to inventory system
+//             //currentVials = inventory.vialCount;
+//     }
+// }
 }

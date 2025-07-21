@@ -22,13 +22,13 @@ public class EnemyWeaponManager : MonoBehaviour
     {
         if (other.CompareTag("Player") && !alreadyHit.Contains(other))
         {
-            Debug.Log("hit player!");
-
             alreadyHit.Add(other);
-            PlayerHealth player = other.GetComponent<PlayerHealth>();
-            if (player != null)
+            PlayerManager player = other.GetComponent<PlayerManager>();
+            PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
+            if (player != null && !player.isInvulnerable)
             {
-                player.TakeDamage(10);
+                Debug.Log("hit player!");
+                playerHealth.TakeDamage(10);
             }
         }
     }
