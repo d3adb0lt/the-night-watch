@@ -7,9 +7,10 @@ TagManager:
   - Bullet
   - Enemy
   - Spawner
-  - BossIntroSpot
   - HealthPickup
   - Key
+  - Fist
+  - Boss
   layers:
   - Default
   - TransparentFX

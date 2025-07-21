@@ -35,9 +35,24 @@ public class BossController : MonoBehaviour
         if (player != null && isChasing == true)
         {
             agent.SetDestination(player.position);
+            agent.isStopped = false;
 
             float speed = agent.velocity.magnitude;
             animator.SetFloat("Speed", speed);
+
+            float distance = Vector3.Distance(transform.position, player.position); 
+            if (distance <= attackRange && ((Time.time - lastAttackTime) >= attackCooldown))
+            {
+                agent.isStopped = true;
+                animator.SetTrigger("Punch");
+                lastAttackTime = Time.time;
+            }
+        }
+
+        // INTEGRATION TO DO - add end of game logic here
+        if (bossHealth.currBossHealth == 0)
+        {
+            animator.SetTrigger("Die");
         }
     }
 
@@ -53,5 +68,13 @@ public class BossController : MonoBehaviour
         bossHealthBar.SetActive(true);
         bossText.SetActive(true);
         isChasing = true;
+    }
+
+    void OnTriggerEnter (Collider player)
+    {
+        if (this.CompareTag("Fist") && player.CompareTag("Player"))
+        {
+            // INTEGRATION TO DO - have player take damage from collision with boss punch
+        }
     }
 }
