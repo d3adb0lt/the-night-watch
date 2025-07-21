@@ -28,16 +28,16 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = maxHealth;
+        playerHealth = maxHealth;
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
     }
 
     public void TakeDamage(int amount)
     {
-        currentHealth -= amount;
-        Debug.Log("Player took damage! Current health: " + currentHealth);
+        playerHealth -= amount;
+        Debug.Log("Player took damage! Current health: " + playerHealth);
 
-        if (currentHealth <= 0)
+        if (playerHealth <= 0)
         {
             Debug.Log("Player died!");
 
@@ -54,12 +54,6 @@ public class PlayerHealth : MonoBehaviour
             //clear input buffer
             PlayerInputBuffer.Instance.ClearBuffer();
         }
-    }
-
-    public void AddVial(int amount)
-    {
-        currentVials = Mathf.Min(currentVials + amount, maxVials);
-        Debug.Log("Picked up vial! Vials now: " + currentVials);
     }
 
     private void Update()
@@ -162,7 +156,7 @@ public class PlayerHealth : MonoBehaviour
         if (inventory != null)
         {
             inventory.AddVial(amount); // Add to inventory system
-            //currentVials = inventory.vialCount;
+            currentVials = inventory.vialCount;
     }
 }
 }

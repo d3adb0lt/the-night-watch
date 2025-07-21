@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 public class EnemyScript : MonoBehaviour
 {
-    // public float enemyHealth = 50f;
+    public float enemyHealth = 50f;
     public TextMeshProUGUI healthTextUI;
     public float maxHealth = 50f;
     public float currentHealth;
