@@ -17,6 +17,14 @@ public class BossController : MonoBehaviour
     public GameObject bossHealthBar;
     public GameObject bossText;
 
+    public AudioSource audioSource;
+    public AudioClip eatAudio; 
+    public AudioClip roarAudio;
+    public AudioClip punchAudio;
+    public AudioClip walkAudio;
+    public AudioClip deathAudio;
+
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -75,6 +83,14 @@ public class BossController : MonoBehaviour
         if (this.CompareTag("Fist") && player.CompareTag("Player"))
         {
             // INTEGRATION TO DO - have player take damage from collision with boss punch
+        }
+    }
+
+    public void PlaySfx(AudioClip audio)
+    {
+        if (audio != null)
+        {
+            audioSource.PlayOneShot(audio);
         }
     }
 }
