@@ -33,13 +33,14 @@ public class PlayerHealth : MonoBehaviour
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         playerHealth -= amount;
         Debug.Log("Player took damage! Current health: " + playerHealth);
 
         if (playerHealth <= 0)
         {
+            playerHealth = 0;
             Debug.Log("Player died!");
 
             playerAnimatorManager.PlayTargetActionAnimation("Death", true, false, false);
