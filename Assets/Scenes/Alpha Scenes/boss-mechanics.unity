@@ -1658,8 +1658,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: The Root
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
-  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a3a3d7d7e21efdf499604bd703e3ce2a, type: 2}
+  m_sharedMaterial: {fileID: 2772958493757767000, guid: a3a3d7d7e21efdf499604bd703e3ce2a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7946,8 +7946,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Step off of this platform if you dare disturb The Root of all Nightmares!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
-  m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a3a3d7d7e21efdf499604bd703e3ce2a, type: 2}
+  m_sharedMaterial: {fileID: 2772958493757767000, guid: a3a3d7d7e21efdf499604bd703e3ce2a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -8322,6 +8322,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4384a1973bda46e46ab3e1d19742adf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBossWeapon: 0
+  regDamage: 10
+  bossDamage: 20
 --- !u!1 &2081550534
 GameObject:
   m_ObjectHideFlags: 0
@@ -8584,6 +8587,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4384a1973bda46e46ab3e1d19742adf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBossWeapon: 0
+  regDamage: 10
+  bossDamage: 20
 --- !u!1001 &2119185661
 PrefabInstance:
   m_ObjectHideFlags: 0
