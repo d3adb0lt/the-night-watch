@@ -2675,7 +2675,7 @@ Transform:
   m_GameObject: {fileID: 8566446165845478568}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0.00014, z: -0}
   m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2700,8 +2700,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.08
-  m_Height: 0.45
+  m_Radius: 0.11
+  m_Height: 0.5
   m_Direction: 1
   m_Center: {x: 0, y: 0.11, z: 0}
 --- !u!54 &7007862947959453077
@@ -2743,6 +2743,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4384a1973bda46e46ab3e1d19742adf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBossWeapon: 0
+  regDamage: 10
+  bossDamage: 20
 --- !u!1 &8643778473010332924
 GameObject:
   m_ObjectHideFlags: 0

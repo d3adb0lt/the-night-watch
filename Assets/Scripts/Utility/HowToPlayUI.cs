@@ -10,7 +10,7 @@ public class HowToPlayUI : MonoBehaviour
     void Awake()
     {
         windowPanel.SetActive(true);
-        scrollRect.verticalNormalizedPosition = 1f;
+        //scrollRect.verticalNormalizedPosition = 1f;
         Time.timeScale = 0f;
         //bruh
     }

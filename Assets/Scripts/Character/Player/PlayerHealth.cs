@@ -24,9 +24,6 @@ public class PlayerHealth : MonoBehaviour
 
     private PlayerAnimatorManager playerAnimatorManager;
 
-
-    
-
     private void Start()
     {
         playerHealth = maxHealth;
