@@ -15,6 +15,7 @@ public class PlayerWeaponManager : MonoBehaviour
        playerManager = GetComponentInParent<PlayerManager>();
        damageAmount = 10;
        weaponCollider = GetComponent<Collider>();
+       this.DisableWeaponCollider();
     }
 
 
@@ -38,7 +39,7 @@ public class PlayerWeaponManager : MonoBehaviour
         }
         else if (other.CompareTag("Boss") && !alreadyHit.Contains(other))
         {
-            //Debug.Log("hit the boss!");
+            Debug.Log("hit the boss!");
 
             alreadyHit.Add(other);
             BossHealth bossHealth = other.GetComponent<BossHealth>();

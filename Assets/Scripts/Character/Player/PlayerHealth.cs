@@ -55,6 +55,7 @@ public class PlayerHealth : MonoBehaviour
             //clear input buffer
             PlayerInputBuffer.Instance.ClearBuffer();
         }
+        SetPlayerHealthText();
     }
 
     private void Update()

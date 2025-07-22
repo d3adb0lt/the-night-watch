@@ -8,8 +8,8 @@ public class BossController : MonoBehaviour
     private Animator animator;
     private BossHealth bossHealth;
 
-    public float attackRange = 2.0f;
-    public float attackCooldown = 1.5f;
+    [SerializeField] float attackRange = 2.0f;
+    [SerializeField] float attackCooldown = 1.5f;
     private float lastAttackTime = 0;
     private bool isChasing;
 
@@ -23,6 +23,7 @@ public class BossController : MonoBehaviour
     public AudioClip punchAudio;
     public AudioClip walkAudio;
     public AudioClip deathAudio;
+
 
 
     void Start()
@@ -78,13 +79,18 @@ public class BossController : MonoBehaviour
         isChasing = true;
     }
 
-    void OnTriggerEnter (Collider player)
-    {
-        if (this.CompareTag("Fist") && player.CompareTag("Player"))
-        {
-            // INTEGRATION TO DO - have player take damage from collision with boss punch
-        }
-    }
+    // void OnTriggerEnter (Collider other)
+    // {
+    //     if (this.CompareTag("Fist") && other.CompareTag("Player"))
+    //     {
+    //         // INTEGRATION TO DO - have player take damage from collision with boss punch
+    //         PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
+    //         if (!playerHealth == null)
+    //         {
+    //             playerHealth.TakeDamage(20);
+    //         }
+    //     }
+    // }
 
     public void PlaySfx(AudioClip audio)
     {

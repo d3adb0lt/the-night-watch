@@ -10,6 +10,8 @@ TagManager:
   - Key
   - Fist
   - Boss
+  - Bullet
+  - PlayerWeapon
   layers:
   - Default
   - TransparentFX
