@@ -17,5 +17,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Alpha Scenes/Game_Over_Scene.unity
     guid: c0a6a73542c4744b9871efeaa04384c8
+  - enabled: 1
+    path: Assets/Scenes/Alpha Scenes/Ending_Scene.unity
+    guid: 206cd4262c408467281aa64dede49423
+  - enabled: 1
+    path: Assets/Scenes/Alpha Scenes/Credits_Scene.unity
+    guid: 6bccf29a3831442969e1189bf33a4dd6
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

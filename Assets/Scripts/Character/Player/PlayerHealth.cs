@@ -25,9 +25,6 @@ public class PlayerHealth : MonoBehaviour
 
     private PlayerAnimatorManager playerAnimatorManager;
 
-
-    
-
     private void Start()
     {
         playerHealth = maxHealth;
@@ -67,14 +64,6 @@ public class PlayerHealth : MonoBehaviour
 
     private void Update()
     {
-        //for testing purposes, subtract health
-        if (Input.GetKeyDown(KeyCode.Minus))
-        {
-            PlayerChangeHealth(-10);
-            if (playerHealth < 0) playerHealth = 0;
-            SetPlayerHealthText();
-        }
-
         // Use Vial when pressing H
         if (Input.GetKeyDown(KeyCode.H))
         {
