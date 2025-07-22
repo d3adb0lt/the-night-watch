@@ -3751,6 +3751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0eca4b1888354ca99b2f2cf473b7a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraObject: {fileID: 719753549}
   target: {fileID: 961730180}
   offset: {x: -10, y: 15, z: -10}
   smoothTime: 0.15
