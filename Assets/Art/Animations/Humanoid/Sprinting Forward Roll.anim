@@ -67135,7 +67135,7 @@ AnimationClip:
   - time: 0.43333334
     functionName: PlayRollSoundFX
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 6394613196960091614, guid: 3ab91b223a0fc4af281fb241f1a1235e, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

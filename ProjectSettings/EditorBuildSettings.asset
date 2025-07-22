@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Alpha Scenes/boss-mechanics.unity
     guid: b4f3884adba5de6479769d27606cf9b8
+  - enabled: 1
+    path: Assets/Scenes/Alpha Scenes/Game_Over_Scene.unity
+    guid: c0a6a73542c4744b9871efeaa04384c8
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

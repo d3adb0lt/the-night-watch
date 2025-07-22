@@ -17,4 +17,19 @@ public class SceneSwitcher : MonoBehaviour
     {
         SceneManager.LoadScene(sceneToLoad);
     }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("Main_Menu_Scene");
+        Time.timeScale = 1f;
+    }
+
+    public void QuitGame()
+    {
+    #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+    #else
+            Application.Quit();
+    #endif
+    }
 }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8581305638787077556}
   - component: {fileID: 6611733521014506029}
+  - component: {fileID: 8130327717048358462}
   m_Layer: 0
   m_Name: Player Input Manager
   m_TagString: Untagged
@@ -44,4 +45,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e17be486b25cc4498dabb8bb7d20e6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerManager: {fileID: 0}
   movement: {x: 0, y: 0}
+  vInput: 0
+  hInput: 0
+  totalMovement: 0
+  cameraInput: {x: 0, y: 0}
+  cameraVInput: 0
+  cameraHInput: 0
+  dodgeInput: 0
+  attackInput: 0
+  chainNum: 0
+  bufferedInput: 0
+--- !u!114 &8130327717048358462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8330980772090292932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 672504eadc773df4aa269233a1a45b63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bufferDuration: 2

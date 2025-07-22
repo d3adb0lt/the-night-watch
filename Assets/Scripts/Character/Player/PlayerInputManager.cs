@@ -70,9 +70,6 @@ public class PlayerInputManager : MonoBehaviour
         userControls.UserMovement.Movement.performed += ctx => movement     = ctx.ReadValue<Vector2>();
         userControls.UserMovement.Movement.canceled  += ctx => movement     = Vector2.zero;
 
-        userControls.UserCamera.Movement.performed   += ctx => cameraInput = ctx.ReadValue<Vector2>();
-        userControls.UserCamera.Movement.canceled    += ctx => cameraInput = Vector2.zero;
-
         userControls.UserActions.Dodge.performed += _ =>
         {
             if (playerManager != null && playerManager.isPerformingAction)
