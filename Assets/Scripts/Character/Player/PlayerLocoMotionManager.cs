@@ -33,7 +33,7 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
     protected override void Update()
     {
         base.Update();
-        CaptureMovementInput();
+        //CaptureMovementInput();
     }
 
     public void HandleAllMovement()
@@ -59,21 +59,30 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
 
     private void HandleGroundMovement()
     {
+        CaptureMovementInput();
+
         if (!player.canMove)
         {
             return;
         }
 
-        // movement vector relative to camera orientation
-        var camTransform = Camera.main != null ? Camera.main.transform : transform;
-        var camForwardOnPlane = Vector3.ProjectOnPlane(camTransform.forward, Vector3.up).normalized;
-        var camRightOnPlane = Vector3.ProjectOnPlane(camTransform.right, Vector3.up).normalized;
+        // movement based off of camera perspective and user input
+        movementDirection = IsometricCamera.instance.transform.forward * verticalMovement;
+        movementDirection += IsometricCamera.instance.transform.right * horizontalMovement;
+        movementDirection.Normalize();
+        movementDirection.y = 0;
 
-        movementDirection = camForwardOnPlane * verticalMovement + camRightOnPlane * horizontalMovement;
-        movementDirection = movementDirection.sqrMagnitude > 1 ? movementDirection.normalized : movementDirection;
+        if (PlayerInputManager.GetInstance().totalMovement > 0.5f)
+        {
+            // at running speed
+            player.characterController.Move(movementDirection * runSpeed * Time.deltaTime);
+        }
+        else if (PlayerInputManager.GetInstance().totalMovement <= 0.5f)
+        {
+            // at walking speed (unused unless controller)
+            player.characterController.Move(movementDirection * walkSpeed * Time.deltaTime);
 
-        float speed = (totalMovement > 0.5) ? runSpeed : walkSpeed;
-        player.characterController.Move(movementDirection * speed * Time.deltaTime);
+        }
     }
 
     private void HandleRotationMovement()
@@ -83,16 +92,20 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
             return;
         }
 
-        var camTransform = Camera.main != null ? Camera.main.transform : transform;
-        desiredRotationDir = Vector3.ProjectOnPlane(camTransform.forward, Vector3.up) * verticalMovement +
-                                    Vector3.ProjectOnPlane(camTransform.right,   Vector3.up) * horizontalMovement;
-
-        if (desiredRotationDir.sqrMagnitude < 0.001f)
-            return;
+        desiredRotationDir = Vector3.zero;
+        desiredRotationDir = IsometricCamera.instance.cameraObject.transform.forward * verticalMovement;
+        desiredRotationDir += IsometricCamera.instance.cameraObject.transform.right * horizontalMovement;
         desiredRotationDir.Normalize();
+        desiredRotationDir.y = 0;
 
-        Quaternion targetRot = Quaternion.LookRotation(desiredRotationDir);
-        transform.rotation   = Quaternion.RotateTowards(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+        if (desiredRotationDir == Vector3.zero)
+        {
+            desiredRotationDir = transform.forward;
+        }
+
+        Quaternion newTurnRotation = Quaternion.LookRotation(desiredRotationDir);
+        Quaternion desiredRotation = Quaternion.Slerp(transform.rotation, newTurnRotation, rotationSpeed * Time.deltaTime);
+        transform.rotation = desiredRotation;
     }
 
     public void AttemptToPerformDodge()
@@ -107,18 +120,19 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
         }
 
         // if moving when dodging perform roll else, perform a backstep
-        // roll animation
-        var camTransform  = Camera.main != null ? Camera.main.transform : transform;
-        rollDirection = Vector3.ProjectOnPlane(camTransform.forward, Vector3.up) * verticalMovement +
-                        Vector3.ProjectOnPlane(camTransform.right,   Vector3.up) * horizontalMovement;
+            // roll animation
+            rollDirection = IsometricCamera.instance.cameraObject.transform.forward * verticalMovement;
+            rollDirection += IsometricCamera.instance.cameraObject.transform.right * horizontalMovement;
 
-        if (rollDirection.sqrMagnitude > 0.001f)
-        {
+            //rollDirection = 
+            rollDirection.y = 0;
             rollDirection.Normalize();
-            player.transform.rotation = Quaternion.LookRotation(rollDirection);
-        }
 
-        player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true, false, false);
+            Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
+            player.transform.rotation = playerRotation;
+
+            player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true, false, false);
+
     }
 
     /*

@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 public class EnemyScript : MonoBehaviour
 {
-    public float enemyHealth = 50f;
+    //public float enemyHealth = 50f;
     public TextMeshProUGUI healthTextUI;
     public float maxHealth = 50f;
     public float currentHealth;
@@ -27,18 +27,8 @@ public class EnemyScript : MonoBehaviour
     public void TakeDamage(float damage)
     {
         if (isDead) return;
-        currentHealth -= damage;
-
-        if (currentHealth < 0) currentHealth = 0;
-
+        
         animator.SetTrigger("TakeDamage");
-
-        // SetHealthText();
-
-        // if (enemyHealth <= 0)
-        // {
-        //     Die();
-        // }
 
         currentHealth -= damage;
         if (currentHealth < 0) currentHealth = 0;
@@ -51,7 +41,7 @@ public class EnemyScript : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Destroy(gameObject);
+            Die();
         }
     }
 

@@ -1,6 +1,9 @@
 using UnityEngine;
 public class IsometricCamera : MonoBehaviour
 {
+    public static IsometricCamera instance;
+    public GameObject cameraObject;
+
     [Header("Target")]
     [SerializeField] private Transform target;
 
@@ -26,6 +29,11 @@ public class IsometricCamera : MonoBehaviour
     {
         cam = GetComponentInChildren<Camera>();
         ApplyProjectionSettings();
+        if (instance == null)
+        {
+            instance = this;
+        }
+
     }
 
     private void LateUpdate()
