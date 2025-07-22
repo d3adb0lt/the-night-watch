@@ -1206,7 +1206,7 @@ GameObject:
   - component: {fileID: 5540314153519191955}
   - component: {fileID: 8399388960255527091}
   m_Layer: 0
-  m_Name: Enemy 1
+  m_Name: Minion
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1264,8 +1264,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be91a6ba850304cf2a28fff0d4b865d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   chaseRange: 30
-  attackRange: 4
+  attackRange: 6
   speed: 3
   idleSpeed: 1
   idleMoveDuration: 2
@@ -1282,7 +1283,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 786c3f15d685ddf47bc998f83b8b8385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthTextUI: {fileID: 0}
   maxHealth: 50
   currentHealth: 0
   healthBar: {fileID: 6380976015197987207}

@@ -3,8 +3,6 @@ using TMPro;
 using UnityEngine.UI;
 public class EnemyScript : MonoBehaviour
 {
-    //public float enemyHealth = 50f;
-    public TextMeshProUGUI healthTextUI;
     public float maxHealth = 50f;
     public float currentHealth;
     public Slider healthBar;
@@ -59,11 +57,7 @@ public class EnemyScript : MonoBehaviour
     {
         animator.SetTrigger("Die");
 
-        isDead = true;
-        if (healthTextUI != null)
-        {
-            healthTextUI.text = "Enemy Defeated!";
-        }   
+        isDead = true; 
         if (TryGetComponent<EnemyChaseAI>(out var chaseAI))
         {
             chaseAI.enabled = false;

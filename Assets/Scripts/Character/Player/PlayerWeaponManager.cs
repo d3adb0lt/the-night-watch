@@ -36,17 +36,6 @@ public class PlayerWeaponManager : MonoBehaviour
                 enemy.TakeDamage(damageAmount);
             }
         }
-        else if (other.CompareTag("Spawner") && !alreadyHit.Contains(other))
-        {
-            Debug.Log("hit spawner!");
-
-            alreadyHit.Add(other);
-            EnemySpawner enemySpawner = other.GetComponent<EnemySpawner>();
-            if (enemySpawner != null)
-            {
-                enemySpawner.TakeDamage(damageAmount);
-            }
-        }
     }
 
     public void EnableWeaponCollider()

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyChaseAI : MonoBehaviour
 {
-    private Transform player;
+    public Transform player;
     private Animator animator;
     private EnemyWeaponManager enemyWeaponManager;
 
@@ -22,7 +22,7 @@ public class EnemyChaseAI : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        //player = GameObject.FindGameObjectWithTag("Player")?.transform;
         animator = GetComponent<Animator>();
         enemyWeaponManager = GetComponentInChildren<EnemyWeaponManager>();
         enemyWeaponManager.DisableWeaponCollider();
@@ -90,6 +90,7 @@ public class EnemyChaseAI : MonoBehaviour
     void FaceTarget(Vector3 target)
     {
         Vector3 direction = (target - transform.position).normalized;
+        direction.y = 0f;
         if (direction != Vector3.zero)
         {
             Quaternion lookRotation = Quaternion.LookRotation(direction);

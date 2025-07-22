@@ -34,7 +34,7 @@ public class BossHealth : MonoBehaviour
     // "this" collider is the boss's hitbox, "bullet" collider is from the player (i think)
     void OnTriggerEnter(Collider bullet)
     {
-        if (this.CompareTag("Boss") && bullet.CompareTag("Bullet"))
+        if (this.CompareTag("Boss") && bullet.CompareTag("Player"))
         {
             BossTakeDamage(12.5f);
         }
