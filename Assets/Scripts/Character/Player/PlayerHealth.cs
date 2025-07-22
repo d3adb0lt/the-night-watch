@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -41,6 +42,11 @@ public class PlayerHealth : MonoBehaviour
             Debug.Log("Player died!");
 
             playerAnimatorManager.PlayTargetActionAnimation("Death", true, false, false);
+
+
+
+            SetPlayerHealthText();
+            StartCoroutine(DelayedEndGame());
             //  death logic here
             // kill player, end game
 
@@ -78,10 +84,6 @@ public class PlayerHealth : MonoBehaviour
         playerHealthText.text = "HP: " + playerHealth.ToString() + "/" + maxHealth.ToString();
         playerHealthBar.value = playerHealth;
         playerHealthBar.maxValue = maxHealth;
-        if (playerHealth <= 0)
-        {
-            EndGame();
-        }
     }
 
     public void PlayerChangeHealth(float healNum)
@@ -133,4 +135,11 @@ public class PlayerHealth : MonoBehaviour
             currentVials = inventory.vialCount;
         }
     }
+
+    private IEnumerator DelayedEndGame()
+    {
+        yield return new WaitForSeconds(3f);
+        EndGame();
+    }
 }
+
