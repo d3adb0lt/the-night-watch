@@ -50,12 +50,8 @@ public class BossHealth : MonoBehaviour
     }
      private System.Collections.IEnumerator HandleDeath()
     {
-        // wait real-time so even if you pause Time.timeScale it still waits
         yield return new WaitForSecondsRealtime(deathDelay);
 
-        // If you use Netcode, shut it down here before loading
-        // if (NetworkManager.Singleton && NetworkManager.Singleton.IsListening)
-        //     NetworkManager.Singleton.Shutdown();
 
         SceneManager.LoadScene(endingSceneName);
         // or: SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
