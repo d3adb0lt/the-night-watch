@@ -12,6 +12,7 @@ public class HowToPlayUI : MonoBehaviour
         windowPanel.SetActive(true);
         scrollRect.verticalNormalizedPosition = 1f;
         Time.timeScale = 0f;
+        //bruh
     }
 
     public void HideWindow()
