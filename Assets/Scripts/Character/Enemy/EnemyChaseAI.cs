@@ -90,6 +90,7 @@ public class EnemyChaseAI : MonoBehaviour
     void FaceTarget(Vector3 target)
     {
         Vector3 direction = (target - transform.position).normalized;
+        direction.y = 0f;
         if (direction != Vector3.zero)
         {
             Quaternion lookRotation = Quaternion.LookRotation(direction);

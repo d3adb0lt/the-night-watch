@@ -1265,7 +1265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaseRange: 30
-  attackRange: 4
+  attackRange: 8
   speed: 3
   idleSpeed: 1
   idleMoveDuration: 2
