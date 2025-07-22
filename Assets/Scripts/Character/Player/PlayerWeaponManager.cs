@@ -36,6 +36,17 @@ public class PlayerWeaponManager : MonoBehaviour
                 enemy.TakeDamage(damageAmount);
             }
         }
+        else if (other.CompareTag("Boss") && !alreadyHit.Contains(other))
+        {
+            //Debug.Log("hit the boss!");
+
+            alreadyHit.Add(other);
+            BossHealth bossHealth = other.GetComponent<BossHealth>();
+            if (bossHealth != null)
+            {
+                bossHealth.BossTakeDamage(damageAmount);
+            }
+        }
     }
 
     public void EnableWeaponCollider()
