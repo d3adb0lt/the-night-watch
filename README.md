@@ -129,6 +129,8 @@
 	- `WorldSoundFXManager.cs`
     - `HowToPlayUI.cs`
     - `SceneSwitcher.cs`
+    - `IsometricCamera.cs`
+    - `PauseMenu.cs`
 
 
 - Assets:
