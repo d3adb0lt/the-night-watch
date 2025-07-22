@@ -24,6 +24,9 @@ public class BossController : MonoBehaviour
     public AudioClip walkAudio;
     public AudioClip deathAudio;
 
+    public EnemyWeaponManager leftFist;
+    public EnemyWeaponManager rightFist;
+
 
 
     void Start()
@@ -31,6 +34,9 @@ public class BossController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         bossHealth = GetComponent<BossHealth>();
+        leftFist = GetComponentInChildren<EnemyWeaponManager>();
+        rightFist = GetComponentInChildren<EnemyWeaponManager>();
+
 
         introTextUI.SetActive(true);
         bossHealthBar.SetActive(false);
@@ -56,12 +62,6 @@ public class BossController : MonoBehaviour
                 animator.SetTrigger("Punch");
                 lastAttackTime = Time.time;
             }
-        }
-
-        // INTEGRATION TO DO - add end of game logic here
-        if (bossHealth.currBossHealth == 0)
-        {
-            animator.SetTrigger("Die");
         }
     }
 
@@ -98,5 +98,32 @@ public class BossController : MonoBehaviour
         {
             audioSource.PlayOneShot(audio);
         }
+    }
+
+    public void SetChasing(bool arg)
+    {
+        this.isChasing = arg;
+    }
+
+    public void EnableLeftFist()
+    {
+        leftFist.EnableWeaponCollider();
+        leftFist.SetBossWeapon(true);
+    }
+
+    public void DisableLeftFist()
+    {
+        leftFist.DisableWeaponCollider();
+    }
+
+    public void EnableRightFist()
+    {
+        rightFist.EnableWeaponCollider();
+        rightFist.SetBossWeapon(true);
+    }
+
+    public void DisableRightFist()
+    {
+        rightFist.DisableWeaponCollider();
     }
 }
