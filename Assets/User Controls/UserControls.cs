@@ -215,89 +215,6 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""User Camera"",
-            ""id"": ""099882f0-15f9-49a0-b720-f0bd447a5de8"",
-            ""actions"": [
-                {
-                    ""name"": ""Movement"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""75602f55-0b4c-4a27-aafa-c07fe8b5ff44"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": ""Right Stick"",
-                    ""id"": ""14583ed0-468c-4d9d-be49-4486f3e14826"",
-                    ""path"": ""2DVector(mode=2)"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""c3661dba-1485-426f-b86a-a0685b1619a7"",
-                    ""path"": ""<Gamepad>/rightStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""3b3e0e36-118a-4a69-8c36-55e6f018485f"",
-                    ""path"": ""<Gamepad>/rightStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""5e223a58-5a18-4ec1-9cab-09491c4427c6"",
-                    ""path"": ""<Gamepad>/rightStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""b531a18c-fff8-409f-9a65-bcc3734795da"",
-                    ""path"": ""<Gamepad>/rightStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""80c63922-e908-4f26-8bcc-ab66eabb57b2"",
-                    ""path"": ""<Mouse>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
             ""name"": ""User Actions"",
             ""id"": ""5fb373af-7f4d-4af3-a5e6-abbada1c2552"",
             ""actions"": [
@@ -305,6 +222,15 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
                     ""name"": ""Dodge"",
                     ""type"": ""Button"",
                     ""id"": ""f8bfe228-4e15-454f-b5e5-163405d5835b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MeleeAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""aee8325e-de74-4a5c-b298-7a71aa0cbb07"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -333,6 +259,28 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
                     ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4492cb28-05ec-4863-88ef-9a702df492f1"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""114a19a5-c81f-4cf0-993c-bf1f1f44e6a6"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -342,18 +290,15 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
         // User Movement
         m_UserMovement = asset.FindActionMap("User Movement", throwIfNotFound: true);
         m_UserMovement_Movement = m_UserMovement.FindAction("Movement", throwIfNotFound: true);
-        // User Camera
-        m_UserCamera = asset.FindActionMap("User Camera", throwIfNotFound: true);
-        m_UserCamera_Movement = m_UserCamera.FindAction("Movement", throwIfNotFound: true);
         // User Actions
         m_UserActions = asset.FindActionMap("User Actions", throwIfNotFound: true);
         m_UserActions_Dodge = m_UserActions.FindAction("Dodge", throwIfNotFound: true);
+        m_UserActions_MeleeAttack = m_UserActions.FindAction("MeleeAttack", throwIfNotFound: true);
     }
 
     ~@UserControls()
     {
         UnityEngine.Debug.Assert(!m_UserMovement.enabled, "This will cause a leak and performance issues, UserControls.UserMovement.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_UserCamera.enabled, "This will cause a leak and performance issues, UserControls.UserCamera.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UserActions.enabled, "This will cause a leak and performance issues, UserControls.UserActions.Disable() has not been called.");
     }
 
@@ -523,106 +468,11 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
     /// </summary>
     public UserMovementActions @UserMovement => new UserMovementActions(this);
 
-    // User Camera
-    private readonly InputActionMap m_UserCamera;
-    private List<IUserCameraActions> m_UserCameraActionsCallbackInterfaces = new List<IUserCameraActions>();
-    private readonly InputAction m_UserCamera_Movement;
-    /// <summary>
-    /// Provides access to input actions defined in input action map "User Camera".
-    /// </summary>
-    public struct UserCameraActions
-    {
-        private @UserControls m_Wrapper;
-
-        /// <summary>
-        /// Construct a new instance of the input action map wrapper class.
-        /// </summary>
-        public UserCameraActions(@UserControls wrapper) { m_Wrapper = wrapper; }
-        /// <summary>
-        /// Provides access to the underlying input action "UserCamera/Movement".
-        /// </summary>
-        public InputAction @Movement => m_Wrapper.m_UserCamera_Movement;
-        /// <summary>
-        /// Provides access to the underlying input action map instance.
-        /// </summary>
-        public InputActionMap Get() { return m_Wrapper.m_UserCamera; }
-        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
-        public void Enable() { Get().Enable(); }
-        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
-        public void Disable() { Get().Disable(); }
-        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
-        public bool enabled => Get().enabled;
-        /// <summary>
-        /// Implicitly converts an <see ref="UserCameraActions" /> to an <see ref="InputActionMap" /> instance.
-        /// </summary>
-        public static implicit operator InputActionMap(UserCameraActions set) { return set.Get(); }
-        /// <summary>
-        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
-        /// </summary>
-        /// <param name="instance">Callback instance.</param>
-        /// <remarks>
-        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
-        /// </remarks>
-        /// <seealso cref="UserCameraActions" />
-        public void AddCallbacks(IUserCameraActions instance)
-        {
-            if (instance == null || m_Wrapper.m_UserCameraActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_UserCameraActionsCallbackInterfaces.Add(instance);
-            @Movement.started += instance.OnMovement;
-            @Movement.performed += instance.OnMovement;
-            @Movement.canceled += instance.OnMovement;
-        }
-
-        /// <summary>
-        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
-        /// </summary>
-        /// <remarks>
-        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
-        /// </remarks>
-        /// <seealso cref="UserCameraActions" />
-        private void UnregisterCallbacks(IUserCameraActions instance)
-        {
-            @Movement.started -= instance.OnMovement;
-            @Movement.performed -= instance.OnMovement;
-            @Movement.canceled -= instance.OnMovement;
-        }
-
-        /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UserCameraActions.UnregisterCallbacks(IUserCameraActions)" />.
-        /// </summary>
-        /// <seealso cref="UserCameraActions.UnregisterCallbacks(IUserCameraActions)" />
-        public void RemoveCallbacks(IUserCameraActions instance)
-        {
-            if (m_Wrapper.m_UserCameraActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        /// <summary>
-        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
-        /// </summary>
-        /// <remarks>
-        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
-        /// </remarks>
-        /// <seealso cref="UserCameraActions.AddCallbacks(IUserCameraActions)" />
-        /// <seealso cref="UserCameraActions.RemoveCallbacks(IUserCameraActions)" />
-        /// <seealso cref="UserCameraActions.UnregisterCallbacks(IUserCameraActions)" />
-        public void SetCallbacks(IUserCameraActions instance)
-        {
-            foreach (var item in m_Wrapper.m_UserCameraActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_UserCameraActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    /// <summary>
-    /// Provides a new <see cref="UserCameraActions" /> instance referencing this action map.
-    /// </summary>
-    public UserCameraActions @UserCamera => new UserCameraActions(this);
-
     // User Actions
     private readonly InputActionMap m_UserActions;
     private List<IUserActionsActions> m_UserActionsActionsCallbackInterfaces = new List<IUserActionsActions>();
     private readonly InputAction m_UserActions_Dodge;
+    private readonly InputAction m_UserActions_MeleeAttack;
     /// <summary>
     /// Provides access to input actions defined in input action map "User Actions".
     /// </summary>
@@ -638,6 +488,10 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UserActions/Dodge".
         /// </summary>
         public InputAction @Dodge => m_Wrapper.m_UserActions_Dodge;
+        /// <summary>
+        /// Provides access to the underlying input action "UserActions/MeleeAttack".
+        /// </summary>
+        public InputAction @MeleeAttack => m_Wrapper.m_UserActions_MeleeAttack;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -667,6 +521,9 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
             @Dodge.started += instance.OnDodge;
             @Dodge.performed += instance.OnDodge;
             @Dodge.canceled += instance.OnDodge;
+            @MeleeAttack.started += instance.OnMeleeAttack;
+            @MeleeAttack.performed += instance.OnMeleeAttack;
+            @MeleeAttack.canceled += instance.OnMeleeAttack;
         }
 
         /// <summary>
@@ -681,6 +538,9 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
             @Dodge.started -= instance.OnDodge;
             @Dodge.performed -= instance.OnDodge;
             @Dodge.canceled -= instance.OnDodge;
+            @MeleeAttack.started -= instance.OnMeleeAttack;
+            @MeleeAttack.performed -= instance.OnMeleeAttack;
+            @MeleeAttack.canceled -= instance.OnMeleeAttack;
         }
 
         /// <summary>
@@ -730,21 +590,6 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
     }
     /// <summary>
-    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "User Camera" which allows adding and removing callbacks.
-    /// </summary>
-    /// <seealso cref="UserCameraActions.AddCallbacks(IUserCameraActions)" />
-    /// <seealso cref="UserCameraActions.RemoveCallbacks(IUserCameraActions)" />
-    public interface IUserCameraActions
-    {
-        /// <summary>
-        /// Method invoked when associated input action "Movement" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMovement(InputAction.CallbackContext context);
-    }
-    /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "User Actions" which allows adding and removing callbacks.
     /// </summary>
     /// <seealso cref="UserActionsActions.AddCallbacks(IUserActionsActions)" />
@@ -758,5 +603,12 @@ public partial class @UserControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDodge(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MeleeAttack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMeleeAttack(InputAction.CallbackContext context);
     }
 }

@@ -3,17 +3,20 @@ using UnityEngine;
 public class PlayerLocoMotionManager : CharacterLocomotionManager
 {
     PlayerManager player;
+    PlayerWeaponManager playerWeapon;
+
     // taken from the player input manager
     [HideInInspector] public float verticalMovement;
     [HideInInspector] public float horizontalMovement;
     [HideInInspector] public float totalMovement;
 
     [Header("Movement Settings")]
-    private Vector3 movementDirection;
-    private Vector3 desiredRotationDir;
     [SerializeField] float walkSpeed = 2;
     [SerializeField] float runSpeed = 5;
     [SerializeField] float rotationSpeed = 12;
+
+    private Vector3 movementDirection;
+    private Vector3 desiredRotationDir;
 
     [Header("Dodge")]
     private Vector3 rollDirection;
@@ -23,27 +26,14 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
         base.Awake();
 
         player = GetComponent<PlayerManager>();
+
+        playerWeapon = GetComponentInChildren<PlayerWeaponManager>();
     }
 
     protected override void Update()
     {
         base.Update();
-
-        if (player.IsOwner)
-        {
-            player.characterNetworkManager.verticalMovement.Value = verticalMovement;
-            player.characterNetworkManager.horizontalMovement.Value = horizontalMovement;
-            player.characterNetworkManager.totalMovement.Value = totalMovement;
-        }
-        else
-        {
-            verticalMovement = player.characterNetworkManager.verticalMovement.Value;
-            horizontalMovement = player.characterNetworkManager.horizontalMovement.Value;
-            totalMovement = player.characterNetworkManager.totalMovement.Value;
-
-            // have to do this since this is not the host, thus it will not be done in the player input manager
-            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, totalMovement);
-        }
+        //CaptureMovementInput();
     }
 
     public void HandleAllMovement()
@@ -53,22 +43,23 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
             return;
         }
         // ground movement
-        HanldeGroundMovement();
-        HandleRotationMovement();
-        // aerial movement
+        HandleGroundMovement();
+
+        // rotate to face meaningful direction (where the player is facing)
+        if (movementDirection.sqrMagnitude > 0.001)
+            HandleRotationMovement();
     }
 
-    private void GetMovementValues()
+    private void CaptureMovementInput()
     {
         verticalMovement = PlayerInputManager.GetInstance().vInput;
         horizontalMovement = PlayerInputManager.GetInstance().hInput;
         totalMovement = PlayerInputManager.GetInstance().totalMovement;
-        // clamp movements
     }
 
-    private void HanldeGroundMovement()
+    private void HandleGroundMovement()
     {
-        GetMovementValues();
+        CaptureMovementInput();
 
         if (!player.canMove)
         {
@@ -76,8 +67,8 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
         }
 
         // movement based off of camera perspective and user input
-        movementDirection = PlayerCamera.GetInstance().transform.forward * verticalMovement;
-        movementDirection += PlayerCamera.GetInstance().transform.right * horizontalMovement;
+        movementDirection = IsometricCamera.instance.transform.forward * verticalMovement;
+        movementDirection += IsometricCamera.instance.transform.right * horizontalMovement;
         movementDirection.Normalize();
         movementDirection.y = 0;
 
@@ -88,7 +79,7 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
         }
         else if (PlayerInputManager.GetInstance().totalMovement <= 0.5f)
         {
-            // at walking speed
+            // at walking speed (unused unless controller)
             player.characterController.Move(movementDirection * walkSpeed * Time.deltaTime);
 
         }
@@ -102,8 +93,8 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
         }
 
         desiredRotationDir = Vector3.zero;
-        desiredRotationDir = PlayerCamera.GetInstance().cameraObject.transform.forward * verticalMovement;
-        desiredRotationDir += PlayerCamera.GetInstance().cameraObject.transform.right * horizontalMovement;
+        desiredRotationDir = IsometricCamera.instance.cameraObject.transform.forward * verticalMovement;
+        desiredRotationDir += IsometricCamera.instance.cameraObject.transform.right * horizontalMovement;
         desiredRotationDir.Normalize();
         desiredRotationDir.y = 0;
 
@@ -119,29 +110,76 @@ public class PlayerLocoMotionManager : CharacterLocomotionManager
 
     public void AttemptToPerformDodge()
     {
-        if (player.isPerformingAction)
+        if (player.isPerformingAction && !player.actionCancelable)
         {
+            // if (PlayerInputBuffer.Instance.GetBufferedInput() != PlayerInputType.Roll)
+            // {
+            //     PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Roll);
+            // }
             return;
         }
 
         // if moving when dodging perform roll else, perform a backstep
-        if (totalMovement > 0)
-        {
             // roll animation
-            rollDirection = PlayerCamera.GetInstance().cameraObject.transform.forward * verticalMovement;
-            rollDirection += PlayerCamera.GetInstance().cameraObject.transform.right * horizontalMovement;
+            rollDirection = IsometricCamera.instance.cameraObject.transform.forward * verticalMovement;
+            rollDirection += IsometricCamera.instance.cameraObject.transform.right * horizontalMovement;
+
+            //rollDirection = 
             rollDirection.y = 0;
             rollDirection.Normalize();
 
             Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
             player.transform.rotation = playerRotation;
 
-            player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true);
-        }
-        else
+            player.playerAnimatorManager.PlayTargetActionAnimation("RollForward", true, false, false);
+
+    }
+
+    /*
+    note to self
+
+    replace buffer with buffer queue for all
+
+    priority right now is to set up a hitbox for the sword and player
+
+    then set up buffer queue
+
+    then implement taking damage and animation for that
+
+    */
+
+    public void AttemptToPerformMeleeAttack(int chainNum)
+    {
+        if (player.isPerformingAction)
         {
-            // back-step animation
-            player.playerAnimatorManager.PlayTargetActionAnimation("Backstep", true);
+            // if any other buffered input other than attack1, add attack1 to the buffer
+            // if (PlayerInputBuffer.Instance.GetBufferedInput() == PlayerInputType.None)
+            // {
+            //     PlayerInputBuffer.Instance.BufferInput(PlayerInputType.Attack1);
+            // }
+
+
+            //Debug.Log("character cannot perform action");
+            return;
         }
+        //Debug.Log("melee attack performed");
+
+        playerWeapon.EnableWeaponCollider();
+        switch (chainNum)
+        {
+            case 1:
+                playerWeapon.SetWeaponDamage(10);
+                break;
+            case 2:
+                playerWeapon.SetWeaponDamage(20);
+                break;
+            case 3:
+                playerWeapon.SetWeaponDamage(30);
+                break;
+            default:
+                break;
+        }        
+        player.playerAnimatorManager.PlayTargetActionAnimation("MeleeAttack" + chainNum, true, true, true);
+        //player.previousInput = PlayerInputType.Attack1;
     }
 }

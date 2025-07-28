@@ -4,12 +4,14 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Bullet
   - Enemy
   - Spawner
-  - BossIntroSpot
   - HealthPickup
   - Key
+  - Fist
+  - Boss
+  - Bullet
+  - PlayerWeapon
   layers:
   - Default
   - TransparentFX

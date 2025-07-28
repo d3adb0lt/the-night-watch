@@ -1,0 +1,137 @@
+using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections;
+
+public class PlayerHealth : MonoBehaviour
+{
+    //health and vial
+    public float playerHealth;
+    public float maxHealth = 100;
+    public int healAmount = 25;
+    public int maxVials = 4;
+    public int currentVials = 0;
+
+    //UI Elements
+    public GameObject generalUIParent;
+    public GameObject playerRoot;
+    public Canvas loseTextObject;
+
+    //health bar
+    public Slider playerHealthBar;
+
+    public TextMeshProUGUI playerHealthText;
+
+    private PlayerAnimatorManager playerAnimatorManager;
+
+    private void Start()
+    {
+        playerHealth = maxHealth;
+        playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+    }
+
+    public void TakeDamage(float amount)
+    {
+        playerHealth -= amount;
+        Debug.Log("Player took damage! Current health: " + playerHealth);
+
+        if (playerHealth <= 0)
+        {
+            playerHealth = 0;
+            Debug.Log("Player died!");
+
+            playerAnimatorManager.PlayTargetActionAnimation("Death", true, false, false);
+
+
+
+            SetPlayerHealthText();
+            StartCoroutine(DelayedEndGame());
+            //  death logic here
+            // kill player, end game
+
+        }
+        else
+        {
+            playerAnimatorManager.PlayTargetActionAnimation("TakeDamage", true, false, false);
+            
+
+            //clear input buffer
+            PlayerInputBuffer.Instance.ClearBuffer();
+        }
+        SetPlayerHealthText();
+    }
+
+    private void Update()
+    {
+        // Use Vial when pressing H
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            UseVial();
+        }
+    }
+
+    public void SetPlayerHealthText()
+    {
+        playerHealthText.text = "HP: " + playerHealth.ToString() + "/" + maxHealth.ToString();
+        playerHealthBar.value = playerHealth;
+        playerHealthBar.maxValue = maxHealth;
+    }
+
+    public void PlayerChangeHealth(float healNum)
+    {
+        playerHealth += healNum;
+        if (playerHealth < 0)
+        {
+            playerHealth = 0;
+        }
+        SetPlayerHealthText();
+    }
+
+    public void UseVial()
+    {
+        PlayerInventory inventory = GetComponent<PlayerInventory>();
+
+        if (inventory != null && inventory.vialCount > 0 && playerHealth < maxHealth)
+        {
+            inventory.UseVial(1); // Use from inventory system
+            //currentVials = inventory.vialCount;
+            playerHealth = Mathf.Min(playerHealth + healAmount, maxHealth);
+            SetPlayerHealthText();
+            Debug.Log("Used a vial! Current health: " + playerHealth + ", Vials left: " + inventory.vialCount);
+        }
+        else if (inventory == null || inventory.vialCount <= 0)
+        {
+            Debug.Log("No vials left!");
+        }
+        else
+        {
+            Debug.Log("Health is already full!");
+        }
+    }
+
+    // Temporary end-game logic
+    public void EndGame()
+    {
+        playerRoot.gameObject.SetActive(false);
+        generalUIParent.gameObject.SetActive(false);
+        SceneManager.LoadScene("Game_Over_Scene");
+    }
+    
+    public void AddVial(int amount)
+    {
+        PlayerInventory inventory = GetComponent<PlayerInventory>();
+        if (inventory != null)
+        {
+            inventory.AddVial(amount); // Add to inventory system
+            currentVials = inventory.vialCount;
+        }
+    }
+
+    private IEnumerator DelayedEndGame()
+    {
+        yield return new WaitForSeconds(3f);
+        EndGame();
+    }
+}
+

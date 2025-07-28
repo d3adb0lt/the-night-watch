@@ -1,0 +1,24 @@
+using UnityEngine;
+
+public class DoorTrigger : MonoBehaviour
+{
+    public Door door;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            PlayerInventory inventory = other.GetComponent<PlayerInventory>();
+            if (inventory != null && inventory.keyCount > 0)
+            {
+                inventory.keyCount--;
+                inventory.UpdateDisplay();
+                door.OpenDoor();
+            }
+            else
+            {
+                Debug.Log("You need a key to open this door!");
+            }
+        }
+    }
+}
